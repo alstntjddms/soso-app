@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.3.0",
     "@nextui-org/react": "^2.2.3",
     "@reduxjs/toolkit": "^1.9.7",
     "framer-motion": "^10.16.4",
     "next": "14.0.1",
     "react": "^18",
-    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
     "react-redux": "^8.1.3"
   },

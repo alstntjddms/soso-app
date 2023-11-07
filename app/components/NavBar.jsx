@@ -1,22 +1,11 @@
 import React from "react";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenu,
-  Link,
-  Button,
-} from "@nextui-org/react";
-import Menu from "./Menu";
-// import {AcmeLogo} from "./AcmeLogo.jsx";
+import { Navbar, NavbarBrand } from "@nextui-org/react";
 
-export default function App() {
+export default function NavBar() {
   return (
     <Navbar height={"40px"}>
       <NavbarBrand>
-        <p className="font-bold text-inherit">Test111</p>
+        <p className="font-bold text-inherit">Test111223333</p>
       </NavbarBrand>
     </Navbar>
   );
