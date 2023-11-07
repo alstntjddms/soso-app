@@ -6,16 +6,16 @@ import reorder, {reorderQuoteMap} from "./reorder";
 
 const items = {
   "1번": [
-    { title: "타이틀1", index: 1 },
-    { title: "타이틀2", index: 2 },
+    { index: 1 ,title: "타이틀1", content:"테스트 콘텐트 1-1"},
+    { index: 2 ,title: "타이틀2", content:"테스트 콘텐트 1-2"},
   ],
   "2번": [
-    { title: "타이틀3", index: 1 },
-    { title: "타이틀4", index: 2 },
+    { index: 1 ,title: "타이틀3", content:"테스트 콘텐트 2-1"},
+    { index: 2 ,title: "타이틀4", content:"테스트 콘텐트 2-2"},
   ],
   "3번": [
-    { title: "타이틀5", index: 1 },
-    { title: "타이틀6", index: 2 },
+    { index: 1 ,title: "타이틀5", content:"테스트 콘텐트 3-1"},
+    { index: 2 ,title: "타이틀6", content:"테스트 콘텐트 3-2"},
   ],
 };
 
@@ -93,17 +93,18 @@ export default function () {
           >
             {(provided) => (
               <div
-                className="inline-flex min-h-screen min-w-screen"
+                className="inline-flex min-h-screen"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
                 {ordered.map((key, index) => (
-                  <Column
-                    key={key}
-                    index={index}
-                    title={key}
-                    columnDatas={columns[key]}
-                  />
+                  <div key={key} className="min-w-screen min-h-screen">
+                    <Column
+                      index={index}
+                      title={key}
+                      columnDatas={columns[key]}
+                    />
+                  </div>
                 ))}
                 {provided.placeholder}
               </div>

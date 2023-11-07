@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
+import CustomCard from "@/app/components/card/CustomCard";
 
 export default function Column(props) {
   const { columnDatas, index, title } = props;
@@ -25,7 +26,9 @@ export default function Column(props) {
                     <Draggable key={item.title} draggableId={item.title} index={index}>
                       {(provided2, snapshot) =>(
                         <div ref={provided2.innerRef} {...provided2.draggableProps}>
-                          <div {...provided2.dragHandleProps}>{item.title}</div>
+                          <div {...provided2.dragHandleProps}>
+                            <CustomCard index={item.index} title={item.title} content={item.content} className="min-h-screen"/>
+                          </div>
                         </div>
                       )}
                     </Draggable>

@@ -1,9 +1,12 @@
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 
-export default function CustomCard() {
+export default function CustomCard(props) {
+  const { index, title, content } = props;
+
   return (
     <Card>
-      <CardBody>test</CardBody>
+      <CardHeader>제목:{title}</CardHeader>
+      <CardBody>내용:{content}</CardBody>
     </Card>
   );
 }
