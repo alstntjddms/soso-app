@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import Column from "./Column";
+import reorder, {reorderQuoteMap} from "./reorder";
 
 const items = {
   "1번": [
@@ -17,6 +18,7 @@ const items = {
     { title: "타이틀6", index: 2 },
   ],
 };
+
 
 export default function () {
   const onDragEnd = (result) => {
@@ -76,9 +78,8 @@ export default function () {
   };
 
   const [columns, setColumns] = useState(items);
-
   const [ordered, setOrdered] = useState(Object.keys(items));
-
+  
   return (
     <div>
       <div className="bg-white">
@@ -101,7 +102,7 @@ export default function () {
                     key={key}
                     index={index}
                     title={key}
-                    columnDatas={columns[index]}
+                    columnDatas={columns[key]}
                   />
                 ))}
                 {provided.placeholder}
