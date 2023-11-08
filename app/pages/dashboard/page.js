@@ -28,13 +28,17 @@ export default function () {
   // const [columns, setColumns] = useState(items);
   const [ordered, setOrdered] = useState(Object.keys(items));
 
+  const updateData = (data) => {
+    dispatch({ type: "setItems", data: data });
+  };
+
   const onDragEnd = (result) => {
     if (result.combine) {
       if (result.type === "COLUMN") {
         const shallow = [...ordered];
         shallow.splice(result.source.index, 1);
         setOrdered(shallow);
-        console.log("1111");
+        // console.log("1111");
         return;
       }
 
@@ -47,8 +51,8 @@ export default function () {
         ...items,
         [result.source.droppableId]: withQuoteRemoved,
       };
-      // setColumns(orderedColumns);
-      dispatch({ type: "setItems", data: orderedColumns });
+      updateData(orderedColumns);
+      // dispatch({ type: "setItems", data: orderedColumns });
       return;
     }
 
@@ -70,7 +74,12 @@ export default function () {
 
     // reordering column
     if (result.type === "COLUMN") {
-      const reorderedorder = reorder(ordered, source.index, destination.index);
+      const reorderedorder = reorder(
+        ordered,
+        source.index,
+        destination.index,
+        false
+      );
       setOrdered(reorderedorder);
       return;
     }
@@ -80,16 +89,15 @@ export default function () {
       source,
       destination,
     });
+    updateData(data.quoteMap);
 
-    // setColumns(data.quoteMap);
-    console.log("dropppp");
-    dispatch({ type: "setItems", data: data.quoteMap });
+    // dispatch({ type: "setItems", data: data.quoteMap });
   };
 
   useEffect(() => {
     console.log("items");
     console.log(items);
-  }, []);
+  }, [items]);
 
   return (
     <div>
@@ -105,6 +113,7 @@ export default function () {
             {(provided) => (
               <div
                 className="inline-flex min-h-screen"
+                style={{ margin: "3%" }}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >

@@ -10,27 +10,12 @@ const reorder = (list, startIndex, endIndex, Yn) => {
     });
   }
 
-  console.log("result1");
-  console.log(result);
-
   return result;
 };
 
 export default reorder;
 
 export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
-  //기존 데이터
-  console.log("quoteMap");
-  console.log(quoteMap);
-
-  // 기존에 있던 위치
-  console.log("source");
-  console.log(source);
-
-  // 새로운 위치
-  console.log("destination");
-  console.log(destination);
-
   const current = [...quoteMap[source.droppableId]];
   const next = [...quoteMap[destination.droppableId]];
   const target = current[source.index];
@@ -63,9 +48,6 @@ export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
       [source.droppableId]: current,
       [destination.droppableId]: next,
     };
-
-    console.log("result2");
-    console.log(result);
     return {
       quoteMap: result,
     };
