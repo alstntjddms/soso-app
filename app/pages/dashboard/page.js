@@ -112,13 +112,17 @@ export default function () {
           >
             {(provided) => (
               <div
-                className="inline-flex min-h-screen"
-                style={{ margin: "3%" }}
+                className="inline-flex min-h-full m-[15px]"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
                 {ordered.map((key, index) => (
-                  <div key={key} className="min-w-screen min-h-screen">
+                  <div
+                    key={key}
+                    // style={{
+                    //   border: "1px solid red",
+                    // }}
+                  >
                     <Column
                       index={index}
                       title={key}

@@ -20,10 +20,14 @@ const initialState = {
       { seq: 3, title: "타이틀7", content: "테스트 콘텐트 2-1", index: 0 },
       { seq: 4, title: "타이틀8", content: "테스트 콘텐트 2-2", index: 1 },
     ],
+    검토요청: [
+      { seq: 12, title: "타이틀9", content: "테스트 콘텐트 3-1", index: 0 },
+      { seq: 13, title: "타이틀10", content: "테스트 콘텐트 3-2", index: 1 },
+    ],
     완료: [
-      { seq: 5, title: "타이틀9", content: "테스트 콘텐트 3-1", index: 0 },
-      { seq: 6, title: "타이틀10", content: "테스트 콘텐트 3-2", index: 1 },
-      { seq: 7, title: "타이틀11", content: "테스트 콘텐트 3-3", index: 2 },
+      { seq: 5, title: "타이틀11", content: "테스트 콘텐트 4-1", index: 0 },
+      { seq: 6, title: "타이틀12", content: "테스트 콘텐트 4-2", index: 1 },
+      { seq: 7, title: "타이틀13", content: "테스트 콘텐트 4-3", index: 2 },
     ],
   },
 };

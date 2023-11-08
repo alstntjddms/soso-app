@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import CustomCard from "@/app/components/card/CustomCard";
+import { ScrollShadow } from "@nextui-org/react";
 
 export default function Column(props) {
   const { columnDatas, index, title } = props;
@@ -14,17 +15,20 @@ export default function Column(props) {
     <Draggable draggableId={title} index={index}>
       {(provided, snapshot) => (
         <div ref={provided.innerRef} {...provided.draggableProps}>
-          <div className="flex flex-col bg-amber-200 p-4">
+          <div className="flex flex-col bg-stone-200 mr-4 border-solid border-2 border-indigo-950">
             <div
-              className="font-bold text-large text-center bg-sky-300"
+              className="font-bold text-large text-center bg-stone-700 text-white"
               {...provided.dragHandleProps}
             >
               {title}
             </div>
-
             <Droppable droppableId={title}>
               {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="w-64 h-96 overflow-auto p-2"
+                >
                   {columnDatas.map((key, index) => (
                     <div
                       key={key.seq.toString()}
@@ -37,7 +41,7 @@ export default function Column(props) {
                       >
                         {(provided2, snapshot2) => (
                           <div
-                            className="mt-2 bg-white"
+                            className="mb-2 w-max-[100px] w-min-[100px]"
                             ref={provided2.innerRef}
                             {...provided2.draggableProps}
                           >
@@ -53,7 +57,7 @@ export default function Column(props) {
                                 index={key.index}
                                 title={key.title}
                                 content={key.content}
-                                className="min-h-screen"
+                                className="min-h-full"
                               />
                             </div>
                           </div>
