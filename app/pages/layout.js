@@ -3,6 +3,7 @@ import Menu from "@/app/components/Menu";
 import Navbar from "@/app/components/Navbar";
 
 import { Provider } from "react-redux";
+import Loading from "../components/loading/Loading";
 import store from "../store/store";
 
 export default function ({ children }) {
@@ -22,6 +23,7 @@ export default function ({ children }) {
           </div>
         </div>
       </div>
+      <Loading />
     </Provider>
   );
 }

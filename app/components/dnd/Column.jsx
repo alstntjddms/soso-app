@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import CustomCard from "@/app/components/card/CustomCard";
+import { useDispatch } from "react-redux";
 
 export default function Column(props) {
+  const dispatch = useDispatch();
+
   const { columnDatas, index, title } = props;
   useEffect(() => {}, [columnDatas]);
 
-  const handleCardClick = (title) => {
-    alert(title);
+  const handleCardClick = async (data) => {
+    dispatch({ type: "setData", data: data });
+    dispatch({ type: "toggleShowData" });
   };
 
   return (
@@ -31,7 +35,7 @@ export default function Column(props) {
                   {columnDatas.map((key, index) => (
                     <div
                       key={key.seq.toString()}
-                      onClick={() => handleCardClick(key.title)}
+                      onClick={() => handleCardClick(key)}
                     >
                       <Draggable
                         // key={key.seq.toString()}

@@ -5,11 +5,11 @@ import Column from "./Column";
 import reorder, { reorderQuoteMap } from "./reorder";
 
 export default function Row(props) {
-  // items 세팅, 수정
-  const items = props.items;
+  // datas 세팅, 수정
+  const datas = props.datas;
   const updateData = props.updateData;
 
-  const [ordered, setOrdered] = useState(Object.keys(items));
+  const [ordered, setOrdered] = useState(Object.keys(datas));
 
   const onDragEnd = (result) => {
     if (result.combine) {
@@ -20,13 +20,13 @@ export default function Row(props) {
         return;
       }
 
-      const column = items[result.source.droppableId];
+      const column = datas[result.source.droppableId];
       const withQuoteRemoved = [...column];
 
       withQuoteRemoved.splice(result.source.index, 1);
 
       const orderedColumns = {
-        ...items,
+        ...datas,
         [result.source.droppableId]: withQuoteRemoved,
       };
       updateData(orderedColumns);
@@ -62,19 +62,12 @@ export default function Row(props) {
     }
 
     const data = reorderQuoteMap({
-      quoteMap: items,
+      quoteMap: datas,
       source,
       destination,
     });
     updateData(data.quoteMap);
-
-    // dispatch({ type: "setItems", data: data.quoteMap });
   };
-
-  useEffect(() => {
-    console.log("items");
-    console.log(items);
-  }, [items]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -98,7 +91,7 @@ export default function Row(props) {
                 //   border: "1px solid red",
                 // }}
               >
-                <Column index={index} title={key} columnDatas={items[key]} />
+                <Column index={index} title={key} columnDatas={datas[key]} />
               </div>
             ))}
             {provided.placeholder}

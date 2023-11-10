@@ -7,7 +7,9 @@ const initialState = {
   Loading: "flex",
   FcmModal: false,
   darkMode: true,
-  items: {
+  showData: false,
+  createData: false,
+  datas: {
     요청: [
       { seq: 1, title: "타이틀1", content: "테스트 콘텐트 1-1", index: 0 },
       { seq: 2, title: "타이틀2", content: "테스트 콘텐트 1-2", index: 1 },
@@ -29,6 +31,12 @@ const initialState = {
       { seq: 6, title: "타이틀12", content: "테스트 콘텐트 4-2", index: 1 },
       { seq: 7, title: "타이틀13", content: "테스트 콘텐트 4-3", index: 2 },
     ],
+  },
+  data: {
+    seq: 0,
+    title: "",
+    content: "",
+    index: 0,
   },
 };
 
@@ -53,8 +61,19 @@ function reducer(state = initialState, action) {
       break;
     case "toggleDarkMode":
       newState.darkMode = !state.darkMode;
-    case "setItems":
-      newState.items = action.data;
+      break;
+    case "setDatas":
+      newState.datas = action.data;
+      break;
+    case "setData":
+      newState.data = action.data;
+      break;
+    case "toggleShowData":
+      newState.showData = !state.showData;
+      break;
+    case "toggleCreateData":
+      newState.createData = !state.createData;
+      break;
   }
   return newState;
 }

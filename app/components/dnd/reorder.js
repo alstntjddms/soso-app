@@ -15,6 +15,23 @@ const reorder = (list, startIndex, endIndex, Yn) => {
 
 export default reorder;
 
+// 데이터 추가 후 list 재정렬 함수
+export const addData = (datas, key, data) => {
+  const current = [...datas[key]];
+  current.unshift(data);
+
+  current.forEach((item, index) => {
+    item.index = index;
+  });
+  const result = {
+    ...datas,
+    [key]: current,
+  };
+
+  return result;
+};
+
+// 데이터 변경 후 list 재정렬 함수
 export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
   const current = [...quoteMap[source.droppableId]];
   const next = [...quoteMap[destination.droppableId]];
@@ -54,24 +71,24 @@ export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
   }
 };
 
-export function moveBetween({ list1, list2, source, destination }) {
-  const newFirst = Array.from(list1.values);
-  const newSecond = Array.from(list2.values);
+// export function moveBetween({ list1, list2, source, destination }) {
+//   const newFirst = Array.from(list1.values);
+//   const newSecond = Array.from(list2.values);
 
-  const moveFrom = source.droppableId === list1.id ? newFirst : newSecond;
-  const moveTo = moveFrom === newFirst ? newSecond : newFirst;
+//   const moveFrom = source.droppableId === list1.id ? newFirst : newSecond;
+//   const moveTo = moveFrom === newFirst ? newSecond : newFirst;
 
-  const [moved] = moveFrom.splice(source.index, 1);
-  moveTo.splice(destination.index, 0, moved);
+//   const [moved] = moveFrom.splice(source.index, 1);
+//   moveTo.splice(destination.index, 0, moved);
 
-  return {
-    list1: {
-      ...list1,
-      values: newFirst,
-    },
-    list2: {
-      ...list2,
-      values: newSecond,
-    },
-  };
-}
+//   return {
+//     list1: {
+//       ...list1,
+//       values: newFirst,
+//     },
+//     list2: {
+//       ...list2,
+//       values: newSecond,
+//     },
+//   };
+// }
