@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import CustomCard from "@/app/components/card/CustomCard";
-import { ScrollShadow } from "@nextui-org/react";
 
 export default function Column(props) {
   const { columnDatas, index, title } = props;
