@@ -20,7 +20,6 @@ export default function () {
   };
 
   useEffect(() => {
-    console.log("qqqqqqqqqqqqqqqqqqq");
     setTimeout(() => {
       dispatch({ type: "closeLoading" });
     }, 500);
