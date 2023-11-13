@@ -11,14 +11,14 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addData } from "../dnd/reorder";
-import { Editor } from "novel";
+import { Editor as NovelEditor } from "novel";
 
 export default function CreateData() {
   const dispatch = useDispatch();
   const isOpen = useSelector((state) => state.createData);
   const datas = useSelector((state) => state.datas);
   const data = useSelector((state) => state.data);
-
+  const [saveStatus, setSaveStatus] = useState("Saved");
   const [title, setTitle] = useState(data.title);
   const [content, setContent] = useState(data.content);
 
@@ -69,13 +69,25 @@ export default function CreateData() {
     });
     setTitle("");
     setContent("");
+
+    //로컬스토리지삭제
+    localStorage.removeItem('minsu');
+
   };
 
   useEffect(() => {
     setTitle(data.title);
+
+    // var minsuValue = '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"1234"}]}]}';
+    // localStorage.setItem('minsu', minsuValue);
+    
     setContent(data.content);
   }, [data.title, data.content]);
 
+  const contentSave = () =>{
+    setContent(localStorage.getItem('minsu'));
+    setSaveStatus("Saved");
+  }
   return (
     <Modal
       isOpen={isOpen}
@@ -85,8 +97,14 @@ export default function CreateData() {
       size="4xl"
     >
       <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">요청 작성</ModalHeader>
+        <ModalHeader className="flex flex-col gap-1">
+          요청 작성
+        <div className="absolute right-10 top-5 z-10 mb-5 rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400">
+          {saveStatus}
+        </div>
+        </ModalHeader>
         <ModalBody>
+        
           <Input
             autoFocus
             label="타이틀"
@@ -102,16 +120,30 @@ export default function CreateData() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           /> */}
-          <Editor
-            className="overflow-auto w-full h-[340px] sm:rounded-lg sm:border sm:shadow-lg"
-            completionApi="http://localhost:8081/api/kace"
-          />
+          <div>
+            <NovelEditor
+              storageKey="minsu"
+              onUpdate={() => {
+                setSaveStatus("Unsaved");
+              }}
+              onDebouncedUpdate={() => {
+                setSaveStatus("Saving...");
+                // Simulate a delay in saving.
+                setTimeout(() => {
+                  contentSave();
+                }, 500);
+              }}
+              defaultValue=""
+              className="overflow-auto w-full h-[340px] sm:rounded-lg sm:border sm:shadow-lg"
+              completionApi="http://localhost:8081/api/kace"
+            />
+          </div>
         </ModalBody>
         <ModalFooter>
           <Button color="danger" variant="flat" onPress={onClose}>
             닫기
           </Button>
-          <Button color="primary" onPress={clickSaveBtn}>
+          <Button color="primary" variant="flat" onPress={clickSaveBtn} isDisabled={saveStatus !== "Saved"}>
             저장
           </Button>
         </ModalFooter>

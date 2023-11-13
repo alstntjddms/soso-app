@@ -63,6 +63,7 @@ function reducer(state = initialState, action) {
       newState.darkMode = !state.darkMode;
       break;
     case "setDatas":
+      console.log(action.data);
       newState.datas = action.data;
       break;
     case "setData":
