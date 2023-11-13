@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addData } from "../dnd/reorder";
+import { Editor } from "novel";
 
 export default function CreateData() {
   const dispatch = useDispatch();
@@ -76,7 +77,13 @@ export default function CreateData() {
   }, [data.title, data.content]);
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onClose} placement="top-center">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onClose}
+      // isDismissable={false}
+      placement="top-center"
+      size="4xl"
+    >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">요청 작성</ModalHeader>
         <ModalBody>
@@ -88,25 +95,17 @@ export default function CreateData() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <Input
+          {/* <Input
             label="내용"
             placeholder="내용을 입력하세요."
             variant="bordered"
             value={content}
             onChange={(e) => setContent(e.target.value)}
+          /> */}
+          <Editor
+            className="overflow-auto w-full h-[340px] sm:rounded-lg sm:border sm:shadow-lg"
+            completionApi="http://localhost:8081/api/kace"
           />
-          <div className="flex py-2 px-1 justify-between">
-            {/* <Checkbox
-                  classNames={{
-                    label: "text-small",
-                  }}
-                >
-                  Remember me
-                </Checkbox>
-                <Link color="primary" href="#" size="sm">
-                  Forgot password?
-                </Link> */}
-          </div>
         </ModalBody>
         <ModalFooter>
           <Button color="danger" variant="flat" onPress={onClose}>
