@@ -11,8 +11,6 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 export async function POST(req) {
-  console.log("req.body");
-  console.log(req.body);
   // Check if the OPENAI_API_KEY is set, if not return 400
   if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
     return new Response(
@@ -22,10 +20,7 @@ export async function POST(req) {
       }
     );
   }
-  console.log("3333");
   let { prompt } = await req.json();
-  console.log(prompt);
-  console.log("4444");
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
@@ -50,11 +45,8 @@ export async function POST(req) {
     stream: true,
     n: 1,
   });
-  console.log(response);
-  console.log("5555");
   // Convert the response into a friendly text-stream
   const stream = OpenAIStream(response);
-  console.log("6666");
   // Respond with the stream
   return new StreamingTextResponse(stream);
 }
