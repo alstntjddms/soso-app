@@ -71,40 +71,35 @@ export default function CreateData() {
     setContent("");
 
     //로컬스토리지삭제
-    localStorage.removeItem('minsu');
-
+    localStorage.removeItem("minsu");
   };
 
   useEffect(() => {
     setTitle(data.title);
-
-    // var minsuValue = '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"1234"}]}]}';
-    // localStorage.setItem('minsu', minsuValue);
-    
     setContent(data.content);
   }, [data.title, data.content]);
 
-  const contentSave = () =>{
-    setContent(localStorage.getItem('minsu'));
+  const contentSave = () => {
+    setContent(localStorage.getItem("minsu"));
     setSaveStatus("Saved");
-  }
+  };
   return (
     <Modal
       isOpen={isOpen}
       onOpenChange={onClose}
-      // isDismissable={false}
       placement="top-center"
-      size="4xl"
+      size="5xl"
+      isDismissable={false}
+      isKeyboardDismissDisabled={true}
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">
           요청 작성
-        <div className="absolute right-10 top-5 z-10 mb-5 rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400">
-          {saveStatus}
-        </div>
+          <div className="absolute right-10 top-5 z-10 mb-5 rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400">
+            {saveStatus}
+          </div>
         </ModalHeader>
         <ModalBody>
-        
           <Input
             autoFocus
             label="타이틀"
@@ -113,13 +108,6 @@ export default function CreateData() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          {/* <Input
-            label="내용"
-            placeholder="내용을 입력하세요."
-            variant="bordered"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          /> */}
           <div>
             <NovelEditor
               storageKey="minsu"
@@ -134,16 +122,23 @@ export default function CreateData() {
                 }, 500);
               }}
               defaultValue=""
-              className="overflow-auto w-full h-[340px] sm:rounded-lg sm:border sm:shadow-lg"
-              completionApi="http://localhost:8081/api/kace"
+              className="overflow-auto w-full min-h-[300px] max-h-[500px] sm:rounded-lg sm:border sm:shadow-lg"
+              // completionApi="http://localhost:8081/api/kace"
             />
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" variant="flat" onPress={onClose}>
-            닫기
-          </Button>
-          <Button color="primary" variant="flat" onPress={clickSaveBtn} isDisabled={saveStatus !== "Saved"}>
+          <div>
+            <Button color="danger" variant="flat" onPress={onClose}>
+              닫기
+            </Button>
+          </div>
+          <Button
+            color="primary"
+            variant="flat"
+            onPress={clickSaveBtn}
+            isDisabled={saveStatus !== "Saved"}
+          >
             저장
           </Button>
         </ModalFooter>

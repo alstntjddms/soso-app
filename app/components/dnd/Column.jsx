@@ -5,9 +5,12 @@ import { useDispatch } from "react-redux";
 
 export default function Column(props) {
   const dispatch = useDispatch();
+  const { index, title } = props;
+  const [columnDatas, setColumnDatas] = useState(props.columnDatas);
 
-  const { columnDatas, index, title } = props;
-  useEffect(() => {}, [columnDatas]);
+  useEffect(() => {
+    setColumnDatas(props.columnDatas);
+  }, [props.columnDatas]);
 
   const handleCardClick = async (data) => {
     dispatch({ type: "setData", data: data });

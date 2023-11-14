@@ -11,6 +11,10 @@ export default function Row(props) {
 
   const [ordered, setOrdered] = useState(Object.keys(datas));
 
+  useEffect(() => {
+    setOrdered(Object.keys(datas));
+  }, [props.datas]);
+
   const onDragEnd = (result) => {
     if (result.combine) {
       if (result.type === "COLUMN") {

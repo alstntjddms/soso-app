@@ -11,8 +11,8 @@ export default function () {
   const dispatch = useDispatch();
   const datas = useSelector((state) => state.datas);
 
-  const updateData = (data) => {
-    dispatch({ type: "setDatas", data: data });
+  const updateData = (datas) => {
+    dispatch({ type: "setDatas", data: datas });
   };
 
   const handleBtnClick = () => {
@@ -29,7 +29,7 @@ export default function () {
     <>
       <Row datas={datas} updateData={updateData} />
       <CreateData />
-      <ShowData />
+      <ShowData updateData={updateData} />
       <Button onPress={handleBtnClick}>추가</Button>
     </>
   );
