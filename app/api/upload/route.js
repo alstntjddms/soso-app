@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export const runtime = "edge";
 
 export async function POST(req) {
-    console.log("aaaaaaaaa");
   console.log(req.headers.get("x-vercel-filename"));
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     console.log("401");
