@@ -13,7 +13,7 @@ export default function Row(props) {
 
   useEffect(() => {
     setOrdered(Object.keys(datas));
-  }, [props.datas]);
+  }, [datas]);
 
   const onDragEnd = (result) => {
     if (result.combine) {

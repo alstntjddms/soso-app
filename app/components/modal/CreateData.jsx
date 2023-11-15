@@ -11,7 +11,9 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addData } from "../dnd/reorder";
-import { Editor as NovelEditor } from "novel";
+// import { Editor as NovelEditor } from "novel";
+// import { Editor as NovelEditor } from "../framework/novel/dist";
+import { Editor as NovelEditor } from "@/framework/novel";
 
 export default function CreateData() {
   const dispatch = useDispatch();

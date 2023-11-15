@@ -11,8 +11,10 @@ import {
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Editor as NovelEditor } from "novel";
-import defaultExtensions from "novel";
+// import { Editor as NovelEditor } from "novel";
+// import { Editor as NovelEditor } from "../framework/novel/dist";
+import { Editor as NovelEditor } from "@/framework/novel";
+
 export default function ShowData(props) {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.data);
@@ -89,7 +91,6 @@ export default function ShowData(props) {
           />
           <div>
             <NovelEditor
-              extensions={[]}
               storageKey="minsu"
               onUpdate={() => {
                 setSaveStatus("Unsaved");

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import CustomTable from "./CustomTable";
 
-export default function () {
+export default function Page() {
   const dispatch = useDispatch();
 
   useEffect(() => {

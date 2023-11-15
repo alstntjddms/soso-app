@@ -7,7 +7,7 @@ import CreateData from "@/app/components/modal/CreateData";
 import ShowData from "@/app/components/modal/ShowData";
 import { useEffect } from "react";
 
-export default function () {
+export default function Page() {
   const dispatch = useDispatch();
   const datas = useSelector((state) => state.datas);
 
