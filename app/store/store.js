@@ -5,6 +5,7 @@ const initialState = {
   profile: "",
   currentPage: "",
   Loading: "flex",
+  TransLoading:"none",
   FcmModal: false,
   darkMode: true,
   showData: false,
@@ -133,6 +134,12 @@ function reducer(state = initialState, action) {
       break;
     case "closeLoading":
       newState.Loading = "none";
+      break;
+    case "openTransLoading":
+      newState.TransLoading = "flex";
+      break;
+    case "closeTransLoading":
+      newState.TransLoading = "none";
       break;
     case "toggleFcmModal":
       newState.FcmModal = !state.FcmModal;

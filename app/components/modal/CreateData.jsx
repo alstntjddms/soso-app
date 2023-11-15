@@ -58,7 +58,6 @@ export default function CreateData() {
   };
 
   const onClose = () => {
-    console.log("aaaa");
     dispatch({ type: "toggleCreateData" });
     dispatch({
       type: "setData",

@@ -9,8 +9,11 @@ export default function Column(props) {
   const [columnDatas, setColumnDatas] = useState(props.columnDatas);
 
   useEffect(() => {
+    dispatch({ type: "openTransLoading" });
     setColumnDatas(props.columnDatas);
-  }, [props.columnDatas]);
+    setTimeout(() => {
+      dispatch({ type: "closeTransLoading" });
+    }, 500);  }, [props.columnDatas]);
 
   const handleCardClick = async (data) => {
     dispatch({ type: "setData", data: data });

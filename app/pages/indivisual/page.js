@@ -7,7 +7,6 @@ export default function Page() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("qqqqqqqqqqqqqqqqqqq");
     setTimeout(() => {
       dispatch({ type: "closeLoading" });
     }, 500);

@@ -3,8 +3,11 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { useState, useEffect } from "react";
 import Column from "./Column";
 import reorder, { reorderQuoteMap } from "./reorder";
+import { useDispatch } from "react-redux";
 
 export default function Row(props) {
+  const dispatch = useDispatch();
+
   // datas 세팅, 수정
   const datas = props.datas;
   const updateData = props.updateData;
@@ -16,11 +19,13 @@ export default function Row(props) {
   }, [datas]);
 
   const onDragEnd = (result) => {
+    // dispatch({ type: "openTransLoading" });
     if (result.combine) {
       if (result.type === "COLUMN") {
         const shallow = [...ordered];
         shallow.splice(result.source.index, 1);
         setOrdered(shallow);
+        // transLoading();
         return;
       }
 
@@ -34,11 +39,13 @@ export default function Row(props) {
         [result.source.droppableId]: withQuoteRemoved,
       };
       updateData(orderedColumns);
+      // transLoading();
       return;
     }
 
     // dropped nowhere
     if (!result.destination) {
+      // transLoading();
       return;
     }
 
@@ -50,6 +57,7 @@ export default function Row(props) {
       source.droppableId === destination.droppableId &&
       source.index === destination.index
     ) {
+      // transLoading();
       return;
     }
 
@@ -62,6 +70,7 @@ export default function Row(props) {
         false
       );
       setOrdered(reorderedorder);
+      // transLoading();
       return;
     }
 
@@ -71,7 +80,14 @@ export default function Row(props) {
       destination,
     });
     updateData(data.quoteMap);
+    // transLoading();
   };
+
+  const transLoading = ()=>{
+    setTimeout(() => {
+      dispatch({ type: "closeTransLoading" });
+    }, 500);
+  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

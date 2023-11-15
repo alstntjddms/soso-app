@@ -5,6 +5,7 @@ import Navbar from "@/app/components/Navbar";
 import { Provider } from "react-redux";
 import Loading from "../components/loading/Loading";
 import store from "../store/store";
+import TransLoading from "../components/loading/TransLoading";
 
 export default function Layout({ children }) {
   return (
@@ -24,6 +25,7 @@ export default function Layout({ children }) {
         </div>
       </div>
       <Loading />
+      <TransLoading />
     </Provider>
   );
 }
