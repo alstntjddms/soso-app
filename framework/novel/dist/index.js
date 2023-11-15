@@ -786,29 +786,35 @@ var CommandList = ({
     if (item && container)
       updateScrollView(container, item);
   }, [selectedIndex]);
-  return items.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+  return items.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
     "div",
     {
       id: "slash-command",
       ref: commandListContainer,
       className: "novel-z-50 novel-h-auto novel-max-h-[330px] novel-w-72 novel-overflow-y-auto novel-rounded-md novel-border novel-border-stone-200 novel-bg-white novel-px-1 novel-py-2 novel-shadow-md novel-transition-all",
-      children: items.map((item, index) => {
-        return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
-          "button",
-          {
-            className: `novel-flex novel-w-full novel-items-center novel-space-x-2 novel-rounded-md novel-px-2 novel-py-1 novel-text-left novel-text-sm novel-text-stone-900 hover:novel-bg-stone-100 ${index === selectedIndex ? "novel-bg-stone-100 novel-text-stone-900" : ""}`,
-            onClick: () => selectItem(index),
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "novel-flex novel-h-10 novel-w-10 novel-items-center novel-justify-center novel-rounded-md novel-border novel-border-stone-200 novel-bg-white", children: item.title === "AI\uB85C \uACC4\uC18D\uD574\uC11C \uC791\uC131\uD558\uAE30" && isLoading ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(LoadingCircle, {}) : item.icon }),
-              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "novel-font-medium", children: item.title }),
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "novel-text-xs novel-text-stone-500", children: item.description })
-              ] })
-            ]
-          },
-          index
-        );
-      })
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex px-14 my-8 text-gray-600 text-sm font-medium", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "self-center overflow-hidden whitespace-nowrap", children: "\uAE30\uBCF8 \uBE14\uB85D" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ml-auto", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "w-4 h-4 bg-gray-400 rounded-full" }) })
+        ] }),
+        items.map((item, index) => {
+          return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
+            "button",
+            {
+              className: `novel-flex novel-w-full novel-items-center novel-space-x-2 novel-rounded-md novel-px-2 novel-py-1 novel-text-left novel-text-sm novel-text-stone-900 hover:novel-bg-stone-100 ${index === selectedIndex ? "novel-bg-stone-100 novel-text-stone-900" : ""}`,
+              onClick: () => selectItem(index),
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "novel-flex novel-h-10 novel-w-10 novel-items-center novel-justify-center novel-rounded-md novel-border novel-border-stone-200 novel-bg-white", children: item.title === "AI\uB85C \uACC4\uC18D\uD574\uC11C \uC791\uC131\uD558\uAE30" && isLoading ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(LoadingCircle, {}) : item.icon }),
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "novel-font-medium", children: item.title }),
+                  /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "novel-text-xs novel-text-stone-500", children: item.description })
+                ] })
+              ]
+            },
+            index
+          );
+        })
+      ]
     }
   ) : null;
 };
@@ -1182,7 +1188,7 @@ var defaultExtensions = [
       if (node.type.name === "heading") {
         return `Heading ${node.attrs.level}`;
       }
-      return "'/'\uC744 \uB20C\uB7EC\uC11C \uBA54\uB274\uB97C \uD655\uC778\uD574\uC8FC\uC138\uC694...";
+      return "AI\uAE30\uB2A5\uC740 '++', \uBA85\uB839\uC5B4\uB294 '/' \uC785\uB825";
     },
     includeChildren: true
   }),
