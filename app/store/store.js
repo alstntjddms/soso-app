@@ -5,7 +5,7 @@ const initialState = {
   profile: "",
   currentPage: "",
   Loading: "flex",
-  TransLoading:"none",
+  TransLoading: "none",
   FcmModal: false,
   darkMode: true,
   showData: false,
@@ -148,6 +148,8 @@ function reducer(state = initialState, action) {
       newState.darkMode = !state.darkMode;
       break;
     case "setDatas":
+      console.log("datas");
+      console.log(action.data);
       newState.datas = action.data;
       break;
     case "setData":

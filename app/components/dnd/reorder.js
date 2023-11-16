@@ -36,7 +36,6 @@ export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
   const current = [...quoteMap[source.droppableId]];
   const next = [...quoteMap[destination.droppableId]];
   const target = current[source.index];
-
   // moving to same list
   if (source.droppableId === destination.droppableId) {
     const reordered = reorder(current, source.index, destination.index, true);

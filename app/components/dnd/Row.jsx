@@ -12,10 +12,12 @@ export default function Row(props) {
   const datas = props.datas;
   const updateData = props.updateData;
 
+  const [columns, setColumns] = useState(datas);
   const [ordered, setOrdered] = useState(Object.keys(datas));
 
   useEffect(() => {
     setOrdered(Object.keys(datas));
+    setColumns(datas);
   }, [datas]);
 
   const onDragEnd = (result) => {
@@ -38,6 +40,7 @@ export default function Row(props) {
         ...datas,
         [result.source.droppableId]: withQuoteRemoved,
       };
+      setColumns(orderedColumns);
       updateData(orderedColumns);
       // transLoading();
       return;
@@ -79,15 +82,17 @@ export default function Row(props) {
       source,
       destination,
     });
+    console.log("data");
+    setColumns(data.quoteMap);
     updateData(data.quoteMap);
     // transLoading();
   };
 
-  const transLoading = ()=>{
+  const transLoading = () => {
     setTimeout(() => {
       dispatch({ type: "closeTransLoading" });
     }, 500);
-  }
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -111,7 +116,7 @@ export default function Row(props) {
                 //   border: "1px solid red",
                 // }}
               >
-                <Column index={index} title={key} columnDatas={datas[key]} />
+                <Column index={index} title={key} columnDatas={columns[key]} />
               </div>
             ))}
             {provided.placeholder}

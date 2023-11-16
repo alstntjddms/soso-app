@@ -6,14 +6,15 @@ import { useDispatch } from "react-redux";
 export default function Column(props) {
   const dispatch = useDispatch();
   const { index, title } = props;
-  const [columnDatas, setColumnDatas] = useState(props.columnDatas);
-
-  useEffect(() => {
-    dispatch({ type: "openTransLoading" });
-    setColumnDatas(props.columnDatas);
-    setTimeout(() => {
-      dispatch({ type: "closeTransLoading" });
-    }, 500);  }, [props.columnDatas]);
+  // const [columnDatas, setColumnDatas] = useState(props.columnDatas);
+  const columnDatas = props.columnDatas;
+  // useEffect(() => {
+  //   dispatch({ type: "openTransLoading" });
+  //   setColumnDatas(props.columnDatas);
+  //   setTimeout(() => {
+  //     dispatch({ type: "closeTransLoading" });
+  //   }, 500);
+  // }, [props.columnDatas]);
 
   const handleCardClick = async (data) => {
     dispatch({ type: "setData", data: data });
