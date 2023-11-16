@@ -224,7 +224,7 @@ ul[data-type=taskList] li[data-checked=true] > div > p {
 `);
 
 // src/ui/editor/index.tsx
-import { useEffect as useEffect5, useRef as useRef4, useState as useState4 } from "react";
+import { useContext as useContext2, useEffect as useEffect5, useRef as useRef4, useState as useState4 } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 
 // src/ui/editor/plugins/upload-images.tsx
@@ -426,7 +426,8 @@ import {
   Image as ImageIcon,
   Code,
   CheckSquare,
-  Bot
+  Bot,
+  FilePieChart
 } from "lucide-react";
 
 // src/ui/icons/loading-circle.tsx
@@ -483,6 +484,9 @@ var getPrevText = (editor, {
 import { createContext } from "react";
 var NovelContext = createContext({
   completionApi: "/api/generate"
+});
+var ContextSummarize = createContext({
+  summarizeApi: "/api/summarize"
 });
 
 // src/ui/editor/extensions/slash-command.tsx
@@ -626,6 +630,13 @@ var getSuggestionItems = ({ query }) => {
       searchTerms: ["gpt"],
       // icon: <Magic className="novel-w-7" />,
       icon: /* @__PURE__ */ jsx3(Bot, { size: 18 })
+    },
+    {
+      title: "AI\uB85C \uC694\uC57D\uD558\uAE30",
+      description: "AI\uC5D0\uAC8C \uC694\uC57D\uD558\uB77C\uACE0 \uC9C0\uC2DC\uD558\uC138\uC694.",
+      searchTerms: ["\uC694\uC57D, \uC815\uB9AC, summarize"],
+      // icon: <Magic className="novel-w-7" />,
+      icon: /* @__PURE__ */ jsx3(FilePieChart, { size: 18 })
     }
   ].filter((item) => {
     if (typeof query === "string" && query.length > 0) {
@@ -654,10 +665,36 @@ var CommandList = ({
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { completionApi } = useContext(NovelContext);
+  const { summarizeApi } = useContext(ContextSummarize);
   const { complete, isLoading } = useCompletion({
     id: "novel",
     api: completionApi,
     onResponse: (response) => {
+      console.log("response");
+      console.log(response);
+      if (response.status === 429) {
+        toast2.error("You have reached your request limit for the day.");
+        va.track("Rate Limit Reached");
+        return;
+      }
+      editor.chain().focus().deleteRange(range).run();
+    },
+    onFinish: (_prompt, completion) => {
+      editor.commands.setTextSelection({
+        from: range.from,
+        to: range.from + completion.length
+      });
+    },
+    onError: (e) => {
+      toast2.error(e.message);
+    }
+  });
+  const { complete: complete1, isLoading: isLoading1 } = useCompletion({
+    id: "novel1",
+    api: summarizeApi,
+    onResponse: (response) => {
+      console.log("response");
+      console.log(response);
       if (response.status === 429) {
         toast2.error("You have reached your request limit for the day.");
         va.track("Rate Limit Reached");
@@ -682,7 +719,16 @@ var CommandList = ({
         command: item.title
       });
       if (item) {
-        if (item.title === "AI\uB85C \uACC4\uC18D\uD574\uC11C \uC791\uC131\uD558\uAE30") {
+        if (item.title === "AI\uB85C \uC694\uC57D\uD558\uAE30") {
+          if (isLoading1)
+            return;
+          complete1(
+            getPrevText(editor, {
+              chars: 5e3,
+              offset: 1
+            })
+          );
+        } else if (item.title === "AI\uB85C \uACC4\uC18D\uD574\uC11C \uC791\uC131\uD558\uAE30") {
           if (isLoading)
             return;
           complete(
@@ -696,7 +742,7 @@ var CommandList = ({
         }
       }
     },
-    [complete, isLoading, command, editor, items]
+    [complete, complete1, isLoading, isLoading1, command, editor, items]
   );
   useEffect(() => {
     const navigationKeys = ["ArrowUp", "ArrowDown", "Enter"];
@@ -746,7 +792,7 @@ var CommandList = ({
             className: `novel-flex novel-w-full novel-items-center novel-space-x-2 novel-rounded-md novel-px-2 novel-py-1 novel-text-left novel-text-sm novel-text-stone-900 hover:novel-bg-stone-100 ${index === selectedIndex ? "novel-bg-stone-100 novel-text-stone-900" : ""}`,
             onClick: () => selectItem(index),
             children: [
-              /* @__PURE__ */ jsx3("div", { className: "novel-flex novel-h-10 novel-w-10 novel-items-center novel-justify-center novel-rounded-md novel-border novel-border-stone-200 novel-bg-white", children: item.title === "AI\uB85C \uACC4\uC18D\uD574\uC11C \uC791\uC131\uD558\uAE30" && isLoading ? /* @__PURE__ */ jsx3(LoadingCircle, {}) : item.icon }),
+              /* @__PURE__ */ jsx3("div", { className: "novel-flex novel-h-10 novel-w-10 novel-items-center novel-justify-center novel-rounded-md novel-border novel-border-stone-200 novel-bg-white", children: item.title === "AI\uB85C \uACC4\uC18D\uD574\uC11C \uC791\uC131\uD558\uAE30" && isLoading ? /* @__PURE__ */ jsx3(LoadingCircle, {}) : item.title === "AI\uB85C \uC694\uC57D\uD558\uAE30" && isLoading1 ? /* @__PURE__ */ jsx3(LoadingCircle, {}) : item.icon }),
               /* @__PURE__ */ jsxs3("div", { children: [
                 /* @__PURE__ */ jsx3("p", { className: "novel-font-medium", children: item.title }),
                 /* @__PURE__ */ jsx3("p", { className: "novel-text-xs novel-text-stone-500", children: item.description })
@@ -16686,8 +16732,32 @@ function Editor2({
     id: "novel",
     api: completionApi,
     onFinish: (_prompt, completion2) => {
+      console.log("11111111");
       editor == null ? void 0 : editor.commands.setTextSelection({
         from: editor.state.selection.from - completion2.length,
+        to: editor.state.selection.from
+      });
+    },
+    onError: (err) => {
+      toast3.error(err.message);
+      if (err.message === "You have reached your request limit for the day.") {
+        va2.track("Rate Limit Reached");
+      }
+    }
+  });
+  const { summarizeApi } = useContext2(ContextSummarize);
+  const {
+    complete: complete1,
+    completion: completion1,
+    isLoading: isLoading1,
+    stop: stop1
+  } = useCompletion2({
+    id: "novel1",
+    api: summarizeApi,
+    onFinish: (_prompt, completion12) => {
+      console.log("22222222");
+      editor == null ? void 0 : editor.commands.setTextSelection({
+        from: editor.state.selection.from - completion12.length,
         to: editor.state.selection.from
       });
     },
@@ -16737,6 +16807,38 @@ function Editor2({
       window.removeEventListener("mousedown", mousedownHandler);
     };
   }, [stop, isLoading, editor, complete, completion.length]);
+  useEffect5(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape" || e.metaKey && e.key === "z") {
+        stop1();
+        if (e.key === "Escape") {
+          editor == null ? void 0 : editor.commands.deleteRange({
+            from: editor.state.selection.from - completion1.length,
+            to: editor.state.selection.from
+          });
+        }
+      }
+    };
+    const mousedownHandler = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      stop1();
+      if (window.confirm("AI writing paused. Continue?")) {
+        complete1((editor == null ? void 0 : editor.getText()) || "");
+      }
+    };
+    if (isLoading1) {
+      document.addEventListener("keydown", onKeyDown);
+      window.addEventListener("mousedown", mousedownHandler);
+    } else {
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("mousedown", mousedownHandler);
+    }
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("mousedown", mousedownHandler);
+    };
+  }, [stop1, isLoading1, editor, complete1, completion1.length]);
   useEffect5(() => {
     if (!editor || hydrated)
       return;

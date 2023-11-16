@@ -15,7 +15,8 @@ export async function POST(req) {
     "This is a dummy response.\nSecond line of the dummy response.\n";
   return new StreamingTextResponse(dummyData);
 
-  console.log("generate");
+  console.log("summarize");
+
   // Check if the OPENAI_API_KEY is set, if not return 400
   if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
     return new Response(
@@ -32,8 +33,8 @@ export async function POST(req) {
       {
         role: "system",
         content:
-          "You are an AI writing assistant that continues existing text based on context from prior text. " +
-          "Give more weight/priority to the later characters than the beginning ones. " +
+          "You are an AI writing assistant that summarize existing text based on context from prior text. " +
+          "Give more weight/priority to the core characters. " +
           "Limit your response to no more than 200 characters and only korean, but make sure to construct complete sentences.",
         // we're disabling markdown for now until we can figure out a way to stream markdown text with proper formatting: https://github.com/steven-tey/novel/discussions/7
         // "Use Markdown formatting when appropriate.",
