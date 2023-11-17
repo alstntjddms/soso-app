@@ -549,15 +549,6 @@ var getSuggestionItems = ({ query }) => {
       }
     },
     {
-      title: "\uD560 \uC77C \uBAA9\uB85D",
-      description: "\uD560 \uC77C \uBAA9\uB85D\uC73C\uB85C \uC791\uC5C5\uC744 \uCD94\uC801\uD558\uC138\uC694.",
-      searchTerms: ["todo", "task", "list", "check", "checkbox"],
-      icon: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_lucide_react.CheckSquare, { size: 18 }),
-      command: ({ editor, range }) => {
-        editor.chain().focus().deleteRange(range).toggleTaskList().run();
-      }
-    },
-    {
       title: "\uC81C\uBAA91",
       description: "\uC139\uC158 \uC81C\uBAA9(\uB300)",
       searchTerms: ["title", "big", "large"],
@@ -600,6 +591,15 @@ var getSuggestionItems = ({ query }) => {
       icon: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_lucide_react.ListOrdered, { size: 18 }),
       command: ({ editor, range }) => {
         editor.chain().focus().deleteRange(range).toggleOrderedList().run();
+      }
+    },
+    {
+      title: "\uD560 \uC77C \uBAA9\uB85D",
+      description: "\uD560 \uC77C \uBAA9\uB85D\uC73C\uB85C \uC791\uC5C5\uC744 \uCD94\uC801\uD558\uC138\uC694.",
+      searchTerms: ["todo", "task", "list", "check", "checkbox"],
+      icon: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_lucide_react.CheckSquare, { size: 18 }),
+      command: ({ editor, range }) => {
+        editor.chain().focus().deleteRange(range).toggleTaskList().run();
       }
     },
     {

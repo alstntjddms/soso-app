@@ -11,9 +11,9 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 export async function POST(req) {
-  const dummyData =
-    "This is a dummy response.\nSecond line of the dummy response.\n";
-  return new StreamingTextResponse(dummyData);
+  // const dummyData =
+  //   "This is a dummy response.\nSecond line of the dummy response.\n";
+  // return new StreamingTextResponse(dummyData);
 
   console.log("generate");
   // Check if the OPENAI_API_KEY is set, if not return 400
