@@ -61,7 +61,9 @@ export default function Column(props) {
                                 border: snapshot2.isDragging
                                   ? "1px solid red"
                                   : null,
+                                transform: snapshot2.isDragging ? "scale(1.1)" : null
                               }}
+                              className="hover:brightness-75"
                             >
                               <CustomCard
                                 index={key.index}
