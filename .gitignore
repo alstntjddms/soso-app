@@ -9,6 +9,9 @@
 #editor-novel
 /framework/novel/node_modules
 
+#env
+.env
+
 # testing
 /coverage
 
