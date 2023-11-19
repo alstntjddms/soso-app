@@ -59,9 +59,9 @@ export default function Column(props) {
                               {...provided2.dragHandleProps}
                               style={{
                                 border: snapshot2.isDragging
-                                  ? "1px solid red"
+                                  ? "2px solid yellow"
                                   : null,
-                                transform: snapshot2.isDragging ? "scale(1.1)" : null
+                                transform: snapshot2.isDragging ? "scale(1.1)" : null,
                               }}
                               className="hover:brightness-75"
                             >
