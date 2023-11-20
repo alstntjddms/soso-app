@@ -1097,6 +1097,7 @@ var DragAndDrop = import_core3.Extension.create({
 var drag_and_drop_default = DragAndDrop;
 
 // src/ui/editor/extensions/index.tsx
+var import_extension_text_align = __toESM(require("@tiptap/extension-text-align"));
 var defaultExtensions = [
   import_starter_kit.default.configure({
     bulletList: {
@@ -1214,7 +1215,10 @@ var defaultExtensions = [
     transformPastedText: true
   }),
   custom_keymap_default,
-  drag_and_drop_default
+  drag_and_drop_default,
+  import_extension_text_align.default.configure({
+    types: ["heading", "paragraph"]
+  })
 ];
 
 // src/lib/hooks/use-local-storage.ts
@@ -1483,7 +1487,7 @@ var defaultEditorContent = {
 // src/ui/editor/bubble-menu/index.tsx
 var import_react7 = require("@tiptap/react");
 var import_react8 = require("react");
-var import_lucide_react5 = require("lucide-react");
+var import_lucide_react6 = require("lucide-react");
 
 // src/ui/editor/bubble-menu/node-selector.tsx
 var import_lucide_react2 = require("lucide-react");
@@ -1886,39 +1890,104 @@ var LinkSelector = ({
   ] });
 };
 
-// src/ui/editor/bubble-menu/index.tsx
+// src/ui/editor/bubble-menu/text-align-selector.tsx
+var import_lucide_react5 = require("lucide-react");
 var import_jsx_runtime7 = require("react/jsx-runtime");
+var TextAlignSelector = ({
+  editor,
+  isOpen,
+  setIsOpen
+}) => {
+  const items = [
+    {
+      name: "Align Left",
+      icon: import_lucide_react5.AlignLeft,
+      command: () => editor.chain().focus().setTextAlign("left").run(),
+      isActive: () => editor.isActive({ textAlign: "left" })
+    },
+    {
+      name: "Align Center",
+      icon: import_lucide_react5.AlignCenter,
+      command: () => editor.chain().focus().setTextAlign("center").run(),
+      isActive: () => editor.isActive({ textAlign: "center" })
+    },
+    {
+      name: "Align Right",
+      icon: import_lucide_react5.AlignRight,
+      command: () => editor.chain().focus().setTextAlign("right").run(),
+      isActive: () => editor.isActive({ textAlign: "right" })
+    },
+    {
+      name: "Align Justify",
+      icon: import_lucide_react5.AlignJustify,
+      command: () => editor.chain().focus().setTextAlign("justify").run(),
+      isActive: () => editor.isActive({ textAlign: "justify" })
+    }
+  ];
+  const activeItem = items.filter((item) => item.isActive()).pop();
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "relative h-full", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+      "button",
+      {
+        className: "flex h-full items-center gap-1 whitespace-nowrap p-2 text-sm font-medium text-stone-600 hover:bg-stone-100 active:bg-stone-200",
+        onClick: () => setIsOpen(!isOpen),
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: activeItem && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(activeItem.icon, { className: "h-3 w-3" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_lucide_react5.ChevronDown, { className: "h-4 w-4" })
+        ]
+      }
+    ),
+    isOpen && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("section", { className: "fixed top-full z-[99999] mt-1 flex w-20 flex-col overflow-hidden rounded border border-stone-200 bg-white p-1 shadow-xl animate-in fade-in slide-in-from-top-1", children: items.map((item, index) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+      "button",
+      {
+        onClick: () => {
+          item.command();
+          setIsOpen(false);
+        },
+        className: "flex items-center justify-between rounded-sm px-2 py-1 text-sm text-stone-600 hover:bg-stone-100",
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "flex items-center space-x-2", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "rounded-sm border border-stone-200 p-1", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(item.icon, { className: "h-3 w-3" }) }) }),
+          activeItem && activeItem.name === item.name && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_lucide_react5.Check, { className: "h-4 w-4" })
+        ]
+      },
+      index
+    )) })
+  ] });
+};
+
+// src/ui/editor/bubble-menu/index.tsx
+var import_jsx_runtime8 = require("react/jsx-runtime");
 var EditorBubbleMenu = (props) => {
   const items = [
     {
       name: "bold",
       isActive: () => props.editor.isActive("bold"),
       command: () => props.editor.chain().focus().toggleBold().run(),
-      icon: import_lucide_react5.BoldIcon
+      icon: import_lucide_react6.BoldIcon
     },
     {
       name: "italic",
       isActive: () => props.editor.isActive("italic"),
       command: () => props.editor.chain().focus().toggleItalic().run(),
-      icon: import_lucide_react5.ItalicIcon
+      icon: import_lucide_react6.ItalicIcon
     },
     {
       name: "underline",
       isActive: () => props.editor.isActive("underline"),
       command: () => props.editor.chain().focus().toggleUnderline().run(),
-      icon: import_lucide_react5.UnderlineIcon
+      icon: import_lucide_react6.UnderlineIcon
     },
     {
       name: "strike",
       isActive: () => props.editor.isActive("strike"),
       command: () => props.editor.chain().focus().toggleStrike().run(),
-      icon: import_lucide_react5.StrikethroughIcon
+      icon: import_lucide_react6.StrikethroughIcon
     },
     {
       name: "code",
       isActive: () => props.editor.isActive("code"),
       command: () => props.editor.chain().focus().toggleCode().run(),
-      icon: import_lucide_react5.CodeIcon
+      icon: import_lucide_react6.CodeIcon
     }
   ];
   const bubbleMenuProps = __spreadProps(__spreadValues({}, props), {
@@ -1936,18 +2005,20 @@ var EditorBubbleMenu = (props) => {
         setIsNodeSelectorOpen(false);
         setIsColorSelectorOpen(false);
         setIsLinkSelectorOpen(false);
+        setIsTextAlignSelectorOpen(false);
       }
     }
   });
   const [isNodeSelectorOpen, setIsNodeSelectorOpen] = (0, import_react8.useState)(false);
   const [isColorSelectorOpen, setIsColorSelectorOpen] = (0, import_react8.useState)(false);
   const [isLinkSelectorOpen, setIsLinkSelectorOpen] = (0, import_react8.useState)(false);
-  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+  const [isTextAlignSelectorOpen, setIsTextAlignSelectorOpen] = (0, import_react8.useState)(false);
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
     import_react7.BubbleMenu,
     __spreadProps(__spreadValues({}, bubbleMenuProps), {
       className: "novel-flex novel-w-fit novel-divide-x novel-divide-stone-200 novel-rounded novel-border novel-border-stone-200 novel-bg-white novel-shadow-xl",
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           NodeSelector,
           {
             editor: props.editor,
@@ -1959,7 +2030,7 @@ var EditorBubbleMenu = (props) => {
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           LinkSelector,
           {
             editor: props.editor,
@@ -1971,24 +2042,39 @@ var EditorBubbleMenu = (props) => {
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "novel-flex", children: items.map((item, index) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-          "button",
-          {
-            onClick: item.command,
-            className: "novel-p-2 novel-text-stone-600 hover:novel-bg-stone-100 active:novel-bg-stone-200",
-            type: "button",
-            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-              item.icon,
-              {
-                className: cn("novel-h-4 novel-w-4", {
-                  "novel-text-blue-500": item.isActive()
-                })
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "novel-flex", children: [
+          items.map((item, index) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+            "button",
+            {
+              onClick: item.command,
+              className: "novel-p-2 novel-text-stone-600 hover:novel-bg-stone-100 active:novel-bg-stone-200",
+              type: "button",
+              children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+                item.icon,
+                {
+                  className: cn("novel-h-4 novel-w-4", {
+                    "novel-text-blue-500": item.isActive()
+                  })
+                }
+              )
+            },
+            index
+          )),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+            TextAlignSelector,
+            {
+              editor: props.editor,
+              isOpen: isTextAlignSelectorOpen,
+              setIsOpen: () => {
+                setIsTextAlignSelectorOpen(!isTextAlignSelectorOpen);
+                setIsColorSelectorOpen(false);
+                setIsNodeSelectorOpen(false);
+                setIsLinkSelectorOpen(false);
               }
-            )
-          },
-          index
-        )) }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           ColorSelector,
           {
             editor: props.editor,
@@ -8794,10 +8880,10 @@ var Rotatable = {
       return null;
     }
     var positions = getRotationPositions(rotationPosition, renderPoses, direction);
-    var jsxs9 = [];
+    var jsxs10 = [];
     positions.forEach(function(_a2, i) {
       var _b2 = __read(_a2, 2), pos = _b2[0], rad = _b2[1];
-      jsxs9.push(React3.createElement(
+      jsxs10.push(React3.createElement(
         "div",
         { key: "rotation".concat(i), className: prefix("rotation"), style: {
           // tslint:disable-next-line: max-line-length
@@ -8830,12 +8916,12 @@ var Rotatable = {
           };
         });
       }
-      jsxs9.push.apply(jsxs9, __spreadArray([], __read(renderDirectionControlsByInfos(moveable, "rotatable", directionControlInfos, React3)), false));
+      jsxs10.push.apply(jsxs10, __spreadArray([], __read(renderDirectionControlsByInfos(moveable, "rotatable", directionControlInfos, React3)), false));
     }
     if (rotateAroundControls) {
-      jsxs9.push.apply(jsxs9, __spreadArray([], __read(renderAroundControls(moveable, React3)), false));
+      jsxs10.push.apply(jsxs10, __spreadArray([], __read(renderAroundControls(moveable, React3)), false));
     }
-    return jsxs9;
+    return jsxs10;
   },
   dragControlCondition,
   dragControlStart: function(moveable, e) {
@@ -16615,7 +16701,7 @@ var Moveable = /* @__PURE__ */ function(_super) {
 }(InitialMoveable);
 
 // src/ui/editor/extensions/image-resizer.tsx
-var import_jsx_runtime8 = require("react/jsx-runtime");
+var import_jsx_runtime9 = require("react/jsx-runtime");
 var ImageResizer = ({ editor }) => {
   const updateMediaSize = () => {
     const imageInfo = document.querySelector(
@@ -16631,7 +16717,7 @@ var ImageResizer = ({ editor }) => {
       editor.commands.setNodeSelection(selection.from);
     }
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_jsx_runtime8.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_jsx_runtime9.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
     Moveable,
     {
       target: document.querySelector(".ProseMirror-selectednode"),
@@ -16672,7 +16758,7 @@ var ImageResizer = ({ editor }) => {
 };
 
 // src/ui/editor/index.tsx
-var import_jsx_runtime9 = require("react/jsx-runtime");
+var import_jsx_runtime10 = require("react/jsx-runtime");
 function Editor2({
   completionApi = "/api/generate",
   className = "novel-relative novel-min-h-[500px] novel-w-full novel-max-w-screen-lg novel-border-stone-200 novel-bg-white sm:novel-mb-[calc(20vh)] sm:novel-rounded-lg sm:novel-border sm:novel-shadow-lg",
@@ -16739,7 +16825,12 @@ function Editor2({
     }
   });
   const { summarizeApi } = (0, import_react11.useContext)(ContextSummarize);
-  const { complete: complete1, completion: completion1, isLoading: isLoading1, stop: stop1 } = (0, import_react13.useCompletion)({
+  const {
+    complete: complete1,
+    completion: completion1,
+    isLoading: isLoading1,
+    stop: stop1
+  } = (0, import_react13.useCompletion)({
     id: "novel1",
     api: summarizeApi,
     onFinish: (_prompt, completion2) => {
@@ -16808,13 +16899,13 @@ function Editor2({
       setHydrated(true);
     }
   }, [editor, defaultValue, content, hydrated, disableLocalStorage]);
-  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
     NovelContext.Provider,
     {
       value: {
         completionApi
       },
-      children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+      children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
         "div",
         {
           onClick: () => {
@@ -16822,9 +16913,9 @@ function Editor2({
           },
           className,
           children: [
-            editor && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(EditorBubbleMenu, { editor }),
-            (editor == null ? void 0 : editor.isActive("image")) && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(ImageResizer, { editor }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_react12.EditorContent, { editor })
+            editor && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(EditorBubbleMenu, { editor }),
+            (editor == null ? void 0 : editor.isActive("image")) && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(ImageResizer, { editor }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_react12.EditorContent, { editor })
           ]
         }
       )

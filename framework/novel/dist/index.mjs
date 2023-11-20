@@ -1084,6 +1084,7 @@ var DragAndDrop = Extension3.create({
 var drag_and_drop_default = DragAndDrop;
 
 // src/ui/editor/extensions/index.tsx
+import TextAlign from "@tiptap/extension-text-align";
 var defaultExtensions = [
   StarterKit.configure({
     bulletList: {
@@ -1201,7 +1202,10 @@ var defaultExtensions = [
     transformPastedText: true
   }),
   custom_keymap_default,
-  drag_and_drop_default
+  drag_and_drop_default,
+  TextAlign.configure({
+    types: ["heading", "paragraph"]
+  })
 ];
 
 // src/lib/hooks/use-local-storage.ts
@@ -1890,8 +1894,80 @@ var LinkSelector = ({
   ] });
 };
 
-// src/ui/editor/bubble-menu/index.tsx
+// src/ui/editor/bubble-menu/text-align-selector.tsx
+import {
+  Check as Check4,
+  ChevronDown as ChevronDown3,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify
+} from "lucide-react";
 import { jsx as jsx7, jsxs as jsxs7 } from "react/jsx-runtime";
+var TextAlignSelector = ({
+  editor,
+  isOpen,
+  setIsOpen
+}) => {
+  const items = [
+    {
+      name: "Align Left",
+      icon: AlignLeft,
+      command: () => editor.chain().focus().setTextAlign("left").run(),
+      isActive: () => editor.isActive({ textAlign: "left" })
+    },
+    {
+      name: "Align Center",
+      icon: AlignCenter,
+      command: () => editor.chain().focus().setTextAlign("center").run(),
+      isActive: () => editor.isActive({ textAlign: "center" })
+    },
+    {
+      name: "Align Right",
+      icon: AlignRight,
+      command: () => editor.chain().focus().setTextAlign("right").run(),
+      isActive: () => editor.isActive({ textAlign: "right" })
+    },
+    {
+      name: "Align Justify",
+      icon: AlignJustify,
+      command: () => editor.chain().focus().setTextAlign("justify").run(),
+      isActive: () => editor.isActive({ textAlign: "justify" })
+    }
+  ];
+  const activeItem = items.filter((item) => item.isActive()).pop();
+  return /* @__PURE__ */ jsxs7("div", { className: "relative h-full", children: [
+    /* @__PURE__ */ jsxs7(
+      "button",
+      {
+        className: "flex h-full items-center gap-1 whitespace-nowrap p-2 text-sm font-medium text-stone-600 hover:bg-stone-100 active:bg-stone-200",
+        onClick: () => setIsOpen(!isOpen),
+        children: [
+          /* @__PURE__ */ jsx7("span", { children: activeItem && /* @__PURE__ */ jsx7(activeItem.icon, { className: "h-3 w-3" }) }),
+          /* @__PURE__ */ jsx7(ChevronDown3, { className: "h-4 w-4" })
+        ]
+      }
+    ),
+    isOpen && /* @__PURE__ */ jsx7("section", { className: "fixed top-full z-[99999] mt-1 flex w-20 flex-col overflow-hidden rounded border border-stone-200 bg-white p-1 shadow-xl animate-in fade-in slide-in-from-top-1", children: items.map((item, index) => /* @__PURE__ */ jsxs7(
+      "button",
+      {
+        onClick: () => {
+          item.command();
+          setIsOpen(false);
+        },
+        className: "flex items-center justify-between rounded-sm px-2 py-1 text-sm text-stone-600 hover:bg-stone-100",
+        children: [
+          /* @__PURE__ */ jsx7("div", { className: "flex items-center space-x-2", children: /* @__PURE__ */ jsx7("div", { className: "rounded-sm border border-stone-200 p-1", children: /* @__PURE__ */ jsx7(item.icon, { className: "h-3 w-3" }) }) }),
+          activeItem && activeItem.name === item.name && /* @__PURE__ */ jsx7(Check4, { className: "h-4 w-4" })
+        ]
+      },
+      index
+    )) })
+  ] });
+};
+
+// src/ui/editor/bubble-menu/index.tsx
+import { jsx as jsx8, jsxs as jsxs8 } from "react/jsx-runtime";
 var EditorBubbleMenu = (props) => {
   const items = [
     {
@@ -1940,18 +2016,20 @@ var EditorBubbleMenu = (props) => {
         setIsNodeSelectorOpen(false);
         setIsColorSelectorOpen(false);
         setIsLinkSelectorOpen(false);
+        setIsTextAlignSelectorOpen(false);
       }
     }
   });
   const [isNodeSelectorOpen, setIsNodeSelectorOpen] = useState3(false);
   const [isColorSelectorOpen, setIsColorSelectorOpen] = useState3(false);
   const [isLinkSelectorOpen, setIsLinkSelectorOpen] = useState3(false);
-  return /* @__PURE__ */ jsxs7(
+  const [isTextAlignSelectorOpen, setIsTextAlignSelectorOpen] = useState3(false);
+  return /* @__PURE__ */ jsxs8(
     BubbleMenu,
     __spreadProps(__spreadValues({}, bubbleMenuProps), {
       className: "novel-flex novel-w-fit novel-divide-x novel-divide-stone-200 novel-rounded novel-border novel-border-stone-200 novel-bg-white novel-shadow-xl",
       children: [
-        /* @__PURE__ */ jsx7(
+        /* @__PURE__ */ jsx8(
           NodeSelector,
           {
             editor: props.editor,
@@ -1963,7 +2041,7 @@ var EditorBubbleMenu = (props) => {
             }
           }
         ),
-        /* @__PURE__ */ jsx7(
+        /* @__PURE__ */ jsx8(
           LinkSelector,
           {
             editor: props.editor,
@@ -1975,24 +2053,39 @@ var EditorBubbleMenu = (props) => {
             }
           }
         ),
-        /* @__PURE__ */ jsx7("div", { className: "novel-flex", children: items.map((item, index) => /* @__PURE__ */ jsx7(
-          "button",
-          {
-            onClick: item.command,
-            className: "novel-p-2 novel-text-stone-600 hover:novel-bg-stone-100 active:novel-bg-stone-200",
-            type: "button",
-            children: /* @__PURE__ */ jsx7(
-              item.icon,
-              {
-                className: cn("novel-h-4 novel-w-4", {
-                  "novel-text-blue-500": item.isActive()
-                })
+        /* @__PURE__ */ jsxs8("div", { className: "novel-flex", children: [
+          items.map((item, index) => /* @__PURE__ */ jsx8(
+            "button",
+            {
+              onClick: item.command,
+              className: "novel-p-2 novel-text-stone-600 hover:novel-bg-stone-100 active:novel-bg-stone-200",
+              type: "button",
+              children: /* @__PURE__ */ jsx8(
+                item.icon,
+                {
+                  className: cn("novel-h-4 novel-w-4", {
+                    "novel-text-blue-500": item.isActive()
+                  })
+                }
+              )
+            },
+            index
+          )),
+          /* @__PURE__ */ jsx8(
+            TextAlignSelector,
+            {
+              editor: props.editor,
+              isOpen: isTextAlignSelectorOpen,
+              setIsOpen: () => {
+                setIsTextAlignSelectorOpen(!isTextAlignSelectorOpen);
+                setIsColorSelectorOpen(false);
+                setIsNodeSelectorOpen(false);
+                setIsLinkSelectorOpen(false);
               }
-            )
-          },
-          index
-        )) }),
-        /* @__PURE__ */ jsx7(
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsx8(
           ColorSelector,
           {
             editor: props.editor,
@@ -8798,10 +8891,10 @@ var Rotatable = {
       return null;
     }
     var positions = getRotationPositions(rotationPosition, renderPoses, direction);
-    var jsxs9 = [];
+    var jsxs10 = [];
     positions.forEach(function(_a2, i) {
       var _b2 = __read(_a2, 2), pos = _b2[0], rad = _b2[1];
-      jsxs9.push(React3.createElement(
+      jsxs10.push(React3.createElement(
         "div",
         { key: "rotation".concat(i), className: prefix("rotation"), style: {
           // tslint:disable-next-line: max-line-length
@@ -8834,12 +8927,12 @@ var Rotatable = {
           };
         });
       }
-      jsxs9.push.apply(jsxs9, __spreadArray([], __read(renderDirectionControlsByInfos(moveable, "rotatable", directionControlInfos, React3)), false));
+      jsxs10.push.apply(jsxs10, __spreadArray([], __read(renderDirectionControlsByInfos(moveable, "rotatable", directionControlInfos, React3)), false));
     }
     if (rotateAroundControls) {
-      jsxs9.push.apply(jsxs9, __spreadArray([], __read(renderAroundControls(moveable, React3)), false));
+      jsxs10.push.apply(jsxs10, __spreadArray([], __read(renderAroundControls(moveable, React3)), false));
     }
-    return jsxs9;
+    return jsxs10;
   },
   dragControlCondition,
   dragControlStart: function(moveable, e) {
@@ -16619,7 +16712,7 @@ var Moveable = /* @__PURE__ */ function(_super) {
 }(InitialMoveable);
 
 // src/ui/editor/extensions/image-resizer.tsx
-import { Fragment, jsx as jsx8 } from "react/jsx-runtime";
+import { Fragment, jsx as jsx9 } from "react/jsx-runtime";
 var ImageResizer = ({ editor }) => {
   const updateMediaSize = () => {
     const imageInfo = document.querySelector(
@@ -16635,7 +16728,7 @@ var ImageResizer = ({ editor }) => {
       editor.commands.setNodeSelection(selection.from);
     }
   };
-  return /* @__PURE__ */ jsx8(Fragment, { children: /* @__PURE__ */ jsx8(
+  return /* @__PURE__ */ jsx9(Fragment, { children: /* @__PURE__ */ jsx9(
     Moveable,
     {
       target: document.querySelector(".ProseMirror-selectednode"),
@@ -16676,7 +16769,7 @@ var ImageResizer = ({ editor }) => {
 };
 
 // src/ui/editor/index.tsx
-import { jsx as jsx9, jsxs as jsxs8 } from "react/jsx-runtime";
+import { jsx as jsx10, jsxs as jsxs9 } from "react/jsx-runtime";
 function Editor2({
   completionApi = "/api/generate",
   className = "novel-relative novel-min-h-[500px] novel-w-full novel-max-w-screen-lg novel-border-stone-200 novel-bg-white sm:novel-mb-[calc(20vh)] sm:novel-rounded-lg sm:novel-border sm:novel-shadow-lg",
@@ -16743,7 +16836,12 @@ function Editor2({
     }
   });
   const { summarizeApi } = useContext2(ContextSummarize);
-  const { complete: complete1, completion: completion1, isLoading: isLoading1, stop: stop1 } = useCompletion2({
+  const {
+    complete: complete1,
+    completion: completion1,
+    isLoading: isLoading1,
+    stop: stop1
+  } = useCompletion2({
     id: "novel1",
     api: summarizeApi,
     onFinish: (_prompt, completion2) => {
@@ -16812,13 +16910,13 @@ function Editor2({
       setHydrated(true);
     }
   }, [editor, defaultValue, content, hydrated, disableLocalStorage]);
-  return /* @__PURE__ */ jsx9(
+  return /* @__PURE__ */ jsx10(
     NovelContext.Provider,
     {
       value: {
         completionApi
       },
-      children: /* @__PURE__ */ jsxs8(
+      children: /* @__PURE__ */ jsxs9(
         "div",
         {
           onClick: () => {
@@ -16826,9 +16924,9 @@ function Editor2({
           },
           className,
           children: [
-            editor && /* @__PURE__ */ jsx9(EditorBubbleMenu, { editor }),
-            (editor == null ? void 0 : editor.isActive("image")) && /* @__PURE__ */ jsx9(ImageResizer, { editor }),
-            /* @__PURE__ */ jsx9(EditorContent, { editor })
+            editor && /* @__PURE__ */ jsx10(EditorBubbleMenu, { editor }),
+            (editor == null ? void 0 : editor.isActive("image")) && /* @__PURE__ */ jsx10(ImageResizer, { editor }),
+            /* @__PURE__ */ jsx10(EditorContent, { editor })
           ]
         }
       )

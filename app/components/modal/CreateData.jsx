@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addData } from "../dnd/reorder";
 // import { Editor as NovelEditor } from "novel";
 // import { Editor as NovelEditor } from "../framework/novel/dist";
-import { Editor as NovelEditor } from "@/framework/novel";
+import { Editor } from "@/framework/novel";
 
 export default function CreateData() {
   const dispatch = useDispatch();
@@ -110,7 +110,7 @@ export default function CreateData() {
             onChange={(e) => setTitle(e.target.value)}
           />
           <div>
-            <NovelEditor
+            <Editor
               storageKey="minsu"
               onUpdate={() => {
                 setSaveStatus("Unsaved");
