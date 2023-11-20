@@ -72,6 +72,7 @@ export default function ShowData(props) {
       size="5xl"
       isDismissable={false}
       isKeyboardDismissDisabled={true}
+      hideCloseButton={true}
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">
@@ -82,6 +83,7 @@ export default function ShowData(props) {
         </ModalHeader>
         <ModalBody>
           <Input
+            tabIndex={-1}
             autoFocus
             label="타이틀"
             placeholder="제목을 입력하세요."
@@ -113,6 +115,7 @@ export default function ShowData(props) {
         </ModalBody>
         <ModalFooter>
           <Button
+            tabIndex={-1}
             color="danger"
             variant="flat"
             onPress={onClose}
@@ -121,6 +124,7 @@ export default function ShowData(props) {
             닫기
           </Button>
           <Button
+            tabIndex={-1}
             color="primary"
             variant="flat"
             onPress={clickSaveBtn}

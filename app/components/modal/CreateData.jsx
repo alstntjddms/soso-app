@@ -92,6 +92,7 @@ export default function CreateData() {
       size="5xl"
       isDismissable={false}
       isKeyboardDismissDisabled={true}
+      hideCloseButton={true}
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">
@@ -102,6 +103,7 @@ export default function CreateData() {
         </ModalHeader>
         <ModalBody>
           <Input
+            tabIndex={-1}
             autoFocus
             label="타이틀"
             placeholder="제목을 입력하세요."
@@ -130,11 +132,17 @@ export default function CreateData() {
         </ModalBody>
         <ModalFooter>
           <div>
-            <Button color="danger" variant="flat" onPress={onClose}>
+            <Button
+              tabIndex={-1}
+              color="danger"
+              variant="flat"
+              onPress={onClose}
+            >
               닫기
             </Button>
           </div>
           <Button
+            tabIndex={-1}
             color="primary"
             variant="flat"
             onPress={clickSaveBtn}
