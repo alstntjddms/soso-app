@@ -1,5 +1,5 @@
 import React from "react";
-import HorizonLine from "../HorizonLine";
+import HorizonLine from "../etc/HorizonLine";
 import { Button, Checkbox, Input, Label } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
