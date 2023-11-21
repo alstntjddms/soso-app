@@ -23,7 +23,7 @@ export default function Login(props) {
 
   return (
     <div
-      className="absolute bg-gray-100 flex w-3/4 max-w-4xl shadow-2xl rounded-lg"
+      className="fixed bg-gray-100 flex w-3/4 max-w-4xl shadow-2xl rounded-lg"
       style={{
         transform: `${
           state === "register" ? "translateX(-110%)" : "translateX(0%)"
