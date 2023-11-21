@@ -1,0 +1,112 @@
+import React from "react";
+import HorizonLine from "../HorizonLine";
+import { Button, Checkbox, Input, Label } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+
+export default function Login(props) {
+  const router = useRouter();
+
+  const state = props.state;
+  const setState = props.setState;
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    router.replace("/pages/dashboard");
+  };
+
+  const handleRegisterClick = (e) => {
+    e.preventDefault();
+    setState("register");
+  };
+
+  return (
+    <div
+      className="absolute bg-gray-100 flex w-3/4 max-w-4xl shadow-2xl rounded-lg"
+      style={{
+        transform: `translateX(${state === "login" ? "0" : "-110%"})`,
+        opacity: state === "login" ? "1" : "0",
+        pointerEvents: state === "login" ? "auto" : "none",
+        transitionProperty: "transform, opacity",
+        transitionDuration: "1000ms",
+      }}
+    >
+      {/* Sign In Section */}
+      <div className="w-3/5 p-10">
+        <a href="/" className="text-left font-semibold text-xl mb-2">
+          SOSO PROJECT
+        </a>
+        <div className="text-center text-cyan-950 text-3xl font-semibold mb-6">
+          Sign in to Account
+        </div>
+        <HorizonLine text="SOSO" />
+
+        <div className="flex justify-center space-x-4 mb-6">
+          {/* <Button variant="outlined" color="blue" icon={<FaFacebookF />} />
+            <Button variant="outlined" color="blue" icon={<FaLinkedinIn />} />
+            <Button variant="outlined" color="red" icon={<FaGoogle />} /> */}
+        </div>
+        <div className="text-center mb-6">이메일 계정으로 로그인</div>
+        <div className="space-y-4">
+          <Input
+            color="primary"
+            label="그룹명"
+            variant="bordered"
+            labelPlacement="inside"
+          />
+          <div className="bg-slate-200 p-4 space-y-2 shadow-sm rounded-lg">
+            <div>로그인정보</div>
+            <Input
+              size="sm"
+              color="primary"
+              type="email"
+              label="아이디"
+              variant="flat"
+              labelPlacement="inside"
+            />
+            <Input
+              size="sm"
+              color="primary"
+              type="password"
+              label="비밀번호"
+              variant="flat"
+              labelPlacement="inside"
+            />
+          </div>
+        </div>
+        <div className="flex justify-between items-center mt-4 mb-6">
+          <Checkbox size="sm" radius="sm" defaultSelected>
+            로그인 상태 유지
+          </Checkbox>
+          <a href="#" className="text-sm text-cyan-950">
+            비밀번호 찾기
+          </a>
+        </div>
+        <Button
+          variant="bordered"
+          color="green"
+          className="w-full hover:bg-cyan-950 hover:text-white"
+          onClick={handleLoginClick}
+        >
+          로그인
+        </Button>
+      </div>
+
+      {/* Welcome Section */}
+      <div className="w-2/5 bg-cyan-950 text-white p-10 rounded-lg flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
+          <h2 className="text-4xl font-semibold mb-2">안녕하세요!</h2>
+          <HorizonLine text="SOSO" />
+          <div className="text-lg mb-8">123456789</div>
+          <Button
+            variant="bordered"
+            color="white"
+            className="hover:bg-white hover:text-cyan-950"
+            onClick={handleRegisterClick}
+          >
+            회원가입
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
