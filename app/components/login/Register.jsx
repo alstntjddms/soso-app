@@ -83,6 +83,25 @@ export default function Register(props) {
               labelPlacement="inside"
             />
           </div>
+          <div className="bg-slate-200 p-4 space-y-2 shadow-sm rounded-lg">
+            <div>본인 인증</div>
+            <Input
+              size="sm"
+              color="primary"
+              type="email"
+              label="이메일"
+              variant="flat"
+              labelPlacement="inside"
+            />
+            <Input
+              size="sm"
+              color="primary"
+              type="text"
+              label="인증번호"
+              variant="flat"
+              labelPlacement="inside"
+            />
+          </div>
         </div>
         <div className="mb-4"></div>
         <Button

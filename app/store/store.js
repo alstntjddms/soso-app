@@ -10,6 +10,8 @@ const initialState = {
   darkMode: true,
   showData: false,
   createData: false,
+  newTeamCreate: false,
+
   datas: {
     요청: [
       {
@@ -160,6 +162,9 @@ function reducer(state = initialState, action) {
       break;
     case "toggleCreateData":
       newState.createData = !state.createData;
+      break;
+    case "toggleNewTeamCreate":
+      newState.newTeamCreate = !state.newTeamCreate;
       break;
   }
   return newState;

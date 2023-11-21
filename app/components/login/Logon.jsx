@@ -2,8 +2,10 @@ import React from "react";
 import HorizonLine from "../etc/HorizonLine";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 export default function Logon(props) {
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const state = props.state;
@@ -38,7 +40,8 @@ export default function Logon(props) {
   };
 
   const handleNewTeamClick = (e) => {
-    setState("newTeam");
+    // setState("newTeam");
+    dispatch({ type: "toggleNewTeamCreate" });
   };
 
   return (
@@ -55,10 +58,10 @@ export default function Logon(props) {
       {/* Sign In Section */}
       <div className="w-3/5 p-10">
         <a href="/" className="text-left font-semibold text-xl mb-2">
-          SOSO PROJECT1
+          SOSO PROJECT
         </a>
         <div className="text-center text-cyan-950 text-3xl font-semibold mb-6">
-          참여 가능 프로젝트
+          참여 가능 프로젝트 팀
         </div>
         <HorizonLine text="SOSO" />
 
