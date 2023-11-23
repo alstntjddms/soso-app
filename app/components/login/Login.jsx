@@ -5,20 +5,20 @@ import { useRouter } from "next/navigation";
 
 export default function Login(props) {
   const router = useRouter();
-
-  const state = props.state;
-  const setState = props.setState;
+  const { state, setState } = props;
 
   const handleLoginClick = (e) => {
-    e.preventDefault();
     setState("logon");
-
-    // router.replace("/pages/dashboard");
   };
 
   const handleRegisterClick = (e) => {
-    e.preventDefault();
     setState("register");
+  };
+
+  const handleKeyDownEnter = (e) => {
+    if (e.key === "Enter") {
+      handleLoginClick();
+    }
   };
 
   return (
@@ -58,7 +58,6 @@ export default function Login(props) {
             labelPlacement="inside"
           /> */}
           <div className="bg-slate-200 p-4 space-y-2 shadow-sm rounded-lg">
-            <div>로그인정보</div>
             <Input
               size="sm"
               color="primary"
@@ -74,6 +73,7 @@ export default function Login(props) {
               label="비밀번호"
               variant="flat"
               labelPlacement="inside"
+              onKeyDown={handleKeyDownEnter}
             />
           </div>
         </div>

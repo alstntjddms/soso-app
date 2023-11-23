@@ -7,9 +7,7 @@ import { useDispatch } from "react-redux";
 export default function Logon(props) {
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const state = props.state;
-  const setState = props.setState;
+  const { state, setState } = props;
 
   const aaaa = [
     {
@@ -87,15 +85,24 @@ export default function Logon(props) {
             ))}
           </Select>
           <div className="bg-slate-200 p-4 space-y-2 shadow-sm rounded-lg">
-            <div>로그인정보</div>
             <Input
               size="sm"
               color="primary"
               type="email"
-              label="로그인 아이디"
+              label="이름"
               variant="bordered"
               labelPlacement="inside"
               value="전민수"
+              isDisabled
+            />
+            <Input
+              size="sm"
+              color="primary"
+              type="email"
+              label="이메일"
+              variant="bordered"
+              labelPlacement="inside"
+              value="soso@naver.com"
               isDisabled
             />
           </div>

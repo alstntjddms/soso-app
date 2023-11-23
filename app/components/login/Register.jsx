@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import HorizonLine from "../etc/HorizonLine";
-import { Button, Checkbox, Input, Label } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import { Button, Input } from "@nextui-org/react";
+import { MailIcon } from "./icons/MailIcon";
+import { EyeSlashFilledIcon } from "./icons/EyeSlashFilledIcon";
+import { EyeFilledIcon } from "./icons/EyeFilledIcon";
 
 export default function Register(props) {
-  const router = useRouter();
-
-  const state = props.state;
-  const setState = props.setState;
+  const { state, setState } = props;
+  const [sendCertified, setSendCertified] = useState(true);
+  const [checkIdDuplicated, setcheckIdDuplicated] = useState(false);
+  const [checkCertified, setCheckCertified] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleLoginClick = (e) => {
     setState("login");
@@ -15,8 +18,31 @@ export default function Register(props) {
 
   const handleRegisterClick = (e) => {
     e.preventDefault();
-    setState("login");
-    // router.replace("/pages/dashboard");
+    if (sendCertified !== false || checkIdDuplicated !== true) {
+      alert("확인해");
+    } else {
+      alert("회원가입 성공");
+      setState("login");
+    }
+  };
+
+  const handleSendCertified = (e) => {
+    setSendCertified(false);
+    alert("인증번호를 전송했습니다.");
+  };
+
+  const handleCheckCertified = (e) => {
+    setCheckCertified(true);
+    alert("인증을 성공했습니다.");
+  };
+
+  const handleCheckIdDuplicated = (e) => {
+    setcheckIdDuplicated(true);
+    alert("사용 가능한 아이디 입니다.");
+  };
+
+  const toggleVisibility = (e) => {
+    setIsVisible(!isVisible);
   };
 
   return (
@@ -57,50 +83,100 @@ export default function Register(props) {
         <HorizonLine text="SOSO" />
         <div className="space-y-4">
           <div className="bg-slate-200 p-4 space-y-2 shadow-sm rounded-lg">
-            <div>로그인정보</div>
+            <div className="flex">
+              <Input
+                size="sm"
+                color="primary"
+                type="email"
+                label="아이디"
+                variant="flat"
+                labelPlacement="inside"
+                isDisabled={checkIdDuplicated}
+              />
+              <Button
+                variant="flat"
+                className="ml-1 h-12"
+                onClick={handleCheckIdDuplicated}
+                isDisabled={checkIdDuplicated}
+              >
+                중복 확인
+              </Button>
+            </div>
             <Input
               size="sm"
               color="primary"
-              type="email"
-              label="아이디"
-              variant="flat"
-              labelPlacement="inside"
-            />
-            <Input
-              size="sm"
-              color="primary"
-              type="password"
               label="비밀번호"
               variant="flat"
               labelPlacement="inside"
-            />
-            <Input
-              size="sm"
-              color="primary"
-              type="password"
-              label="비밀번호 확인"
-              variant="flat"
-              labelPlacement="inside"
+              type={isVisible ? "text" : "password"}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={toggleVisibility}
+                >
+                  {isVisible ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
             />
           </div>
           <div className="bg-slate-200 p-4 space-y-2 shadow-sm rounded-lg">
-            <div>본인 인증</div>
             <Input
               size="sm"
               color="primary"
               type="email"
-              label="이메일"
+              label="이름"
               variant="flat"
               labelPlacement="inside"
             />
-            <Input
-              size="sm"
-              color="primary"
-              type="text"
-              label="인증번호"
-              variant="flat"
-              labelPlacement="inside"
-            />
+            {sendCertified ? (
+              <div className="flex">
+                <Input
+                  size="sm"
+                  color="primary"
+                  type="email"
+                  label="이메일"
+                  variant="flat"
+                  placeholder="soso@naver.com"
+                  endContent={
+                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                />
+                <Button
+                  variant="flat"
+                  className="ml-1 h-12	"
+                  onClick={handleSendCertified}
+                >
+                  인증 전송
+                </Button>
+              </div>
+            ) : null}
+
+            {!sendCertified ? (
+              <div className="flex">
+                <Input
+                  size="sm"
+                  color="primary"
+                  type="text"
+                  label="인증번호"
+                  variant="flat"
+                  labelPlacement="inside"
+                  isDisabled={checkCertified}
+                />
+                <Button
+                  variant="flat"
+                  className="ml-1 h-12	"
+                  onClick={handleCheckCertified}
+                  isDisabled={checkCertified}
+                >
+                  인증 확인
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="mb-4"></div>
@@ -109,6 +185,7 @@ export default function Register(props) {
           color="green"
           className="w-full hover:bg-cyan-950 hover:text-white"
           onClick={handleRegisterClick}
+          isDisabled={!checkIdDuplicated || !checkCertified || sendCertified}
         >
           회원가입
         </Button>

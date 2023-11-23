@@ -11,7 +11,6 @@ export default function Layout({ children }) {
   const router = useRouter();
 
   const handleLoginClick = (e) => {
-    e.preventDefault();
     router.replace("/login");
   };
   return (
