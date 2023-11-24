@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 const SERVER_URL = "http://localhost/api";
 
@@ -37,14 +37,14 @@ export default class sosoAPI {
         }
       })
       .catch((res) => {
-        if (res.response.status === 400) {
-          // CustomException 예외
+        if (res.response.status === HttpStatusCode.BadRequest) {
           alert(res.response.data.name);
           console.log(res.response.data.name);
           console.log(res.response.data.message);
           console.log(res.response.data.errorDate);
+          return res;
         } else {
-          alert("알수 없는 에러발생");
+          alert("알수없는 에러");
         }
       });
   }

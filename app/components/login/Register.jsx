@@ -4,41 +4,85 @@ import { Button, Input } from "@nextui-org/react";
 import { MailIcon } from "./icons/MailIcon";
 import { EyeSlashFilledIcon } from "./icons/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "./icons/EyeFilledIcon";
+import sosoAPI from "../framework/api/sosoAPI";
+import { HttpStatusCode } from "axios";
 
 export default function Register(props) {
   const { state, setState } = props;
   const [sendCertified, setSendCertified] = useState(true);
-  const [checkIdDuplicated, setcheckIdDuplicated] = useState(false);
+  const [checkIdDuplicated, setCheckIdDuplicated] = useState(false);
   const [checkCertified, setCheckCertified] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleLoginClick = (e) => {
+  const [loginId, setLoginId] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [certifiedCode, setCertifiedCode] = useState("");
+
+  const handleLoginClick = () => {
     setState("login");
   };
 
-  const handleRegisterClick = (e) => {
-    e.preventDefault();
+  const handleRegisterClick = async () => {
     if (sendCertified !== false || checkIdDuplicated !== true) {
-      alert("확인해");
-    } else {
-      alert("회원가입 성공");
-      setState("login");
+      return;
     }
+    await sosoAPI
+      .post("/register/member", {
+        loginId: loginId,
+        password: password,
+        name: name,
+        email: email,
+        certifiedCode: certifiedCode,
+      })
+      .then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          setState("login");
+          alert("회원가입을 성공했습니다.");
+        }
+      });
   };
 
-  const handleSendCertified = (e) => {
-    setSendCertified(false);
-    alert("인증번호를 전송했습니다.");
+  const handleSendCertified = async () => {
+    await sosoAPI
+      .post("/register/send-CertifiedCodeToMail", {
+        email: email,
+      })
+      .then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          setSendCertified(false);
+          alert("인증번호를 전송했습니다.");
+        }
+      });
   };
 
-  const handleCheckCertified = (e) => {
-    setCheckCertified(true);
-    alert("인증을 성공했습니다.");
+  const handleCheckCertified = async () => {
+    await sosoAPI
+      .post("/register/check-CertifiedCodeToEmail", {
+        email: email,
+        certifiedCode: certifiedCode,
+      })
+      .then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          setCheckCertified(true);
+          alert("인증을 성공했습니다.");
+        }
+      });
   };
 
-  const handleCheckIdDuplicated = (e) => {
-    setcheckIdDuplicated(true);
-    alert("사용 가능한 아이디 입니다.");
+  const handleCheckIdDuplicated = async () => {
+    await sosoAPI
+      .post("/register/check-LoginIdDuplicated", {
+        loginId: loginId,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === HttpStatusCode.Ok) {
+          setCheckIdDuplicated(true);
+          alert("사용 가능한 아이디 입니다.");
+        }
+      });
   };
 
   const toggleVisibility = (e) => {
@@ -92,6 +136,7 @@ export default function Register(props) {
                 variant="flat"
                 labelPlacement="inside"
                 isDisabled={checkIdDuplicated}
+                onValueChange={setLoginId}
               />
               <Button
                 variant="flat"
@@ -108,6 +153,7 @@ export default function Register(props) {
               label="비밀번호"
               variant="flat"
               labelPlacement="inside"
+              onValueChange={setPassword}
               type={isVisible ? "text" : "password"}
               endContent={
                 <button
@@ -132,6 +178,7 @@ export default function Register(props) {
               label="이름"
               variant="flat"
               labelPlacement="inside"
+              onValueChange={setName}
             />
             {sendCertified ? (
               <div className="flex">
@@ -142,6 +189,7 @@ export default function Register(props) {
                   label="이메일"
                   variant="flat"
                   placeholder="soso@naver.com"
+                  onValueChange={setEmail}
                   endContent={
                     <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                   }
@@ -166,6 +214,7 @@ export default function Register(props) {
                   variant="flat"
                   labelPlacement="inside"
                   isDisabled={checkCertified}
+                  onValueChange={setCertifiedCode}
                 />
                 <Button
                   variant="flat"
