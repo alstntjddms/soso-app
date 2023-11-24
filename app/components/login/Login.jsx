@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import HorizonLine from "../etc/HorizonLine";
 import { Button, Checkbox, Input, Label } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import sosoAPI from "../framework/api/sosoApi";
 
 export default function Login(props) {
   const router = useRouter();
   const { state, setState } = props;
+  const [loginId, setLoginId] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLoginClick = (e) => {
-    setState("logon");
+  const handleLoginClick = async (e) => {
+    await sosoAPI
+      .post("http://localhost/api/login/login", {
+        loginId: loginId,
+        password: password,
+      })
+      .then((res) => {
+        if (res.data != null) {
+          setState("logon");
+        }
+        console.log(res);
+      });
   };
 
   const handleRegisterClick = (e) => {
@@ -65,6 +78,7 @@ export default function Login(props) {
               label="아이디"
               variant="flat"
               labelPlacement="inside"
+              onValueChange={setLoginId}
             />
             <Input
               size="sm"
@@ -73,6 +87,7 @@ export default function Login(props) {
               label="비밀번호"
               variant="flat"
               labelPlacement="inside"
+              onValueChange={setPassword}
               onKeyDown={handleKeyDownEnter}
             />
           </div>

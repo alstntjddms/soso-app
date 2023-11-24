@@ -2,9 +2,9 @@
 import Menu from "@/app/components/Menu";
 import Navbar from "@/app/components/Navbar";
 import { Provider } from "react-redux";
-import Loading from "../components/loading/Loading";
-import store from "../store/store";
-import TransLoading from "../components/loading/TransLoading";
+import Loading from "@/app/components/loading/Loading";
+import store from "@/app/store/store";
+import TransLoading from "@/app/components/loading/TransLoading";
 import { useRouter } from "next/navigation";
 
 export default function Layout({ children }) {

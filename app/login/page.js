@@ -1,11 +1,11 @@
 "use client";
-import Login from "../components/login/Login";
+import Login from "@/app/components/login/Login";
 import { useEffect, useState } from "react";
-import Register from "../components/login/Register";
-import Logon from "../components/login/Logon";
-import NewTeamCreate from "../components/modal/NewTeamCreate";
+import Register from "@/app/components/login/Register";
+import Logon from "@/app/components/login/Logon";
+import NewTeamCreate from "@/app/components/modal/NewTeamCreate";
 import { Provider } from "react-redux";
-import store from "../store/store";
+import store from "@/app/store/store";
 
 export default function Page() {
   const [state, setState] = useState("login");
