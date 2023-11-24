@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import HorizonLine from "../etc/HorizonLine";
 import { Button, Checkbox, Input, Label } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import sosoAPI from "../framework/api/sosoApi";
+import sosoAPI from "../framework/api/sosoAPI";
 
 export default function Login(props) {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function Login(props) {
 
   const handleLoginClick = async (e) => {
     await sosoAPI
-      .post("http://localhost/api/login/login", {
+      .post("/login/login", {
         loginId: loginId,
         password: password,
       })

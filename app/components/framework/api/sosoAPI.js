@@ -1,9 +1,11 @@
 import axios from "axios";
 
+const SERVER_URL = "http://localhost/api";
+
 export default class sosoAPI {
   static async get(url) {
     return await axios
-      .get(url, { withCredentials: true })
+      .get(SERVER_URL + url, { withCredentials: true })
       .then((res) => {
         if (res.status === 200) {
           return res;
@@ -26,7 +28,7 @@ export default class sosoAPI {
 
   static async post(url, data) {
     return await axios
-      .post(url, data, { withCredentials: true })
+      .post(SERVER_URL + url, data, { withCredentials: true })
       .then((res) => {
         if (res.status === 200) {
           return res;
