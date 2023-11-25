@@ -53,18 +53,21 @@ export default function Register(props) {
   };
 
   const handleSendCertified = async () => {
+    dispatch({ type: "openTransLoading" });
     await sosoAPI
       .post("/register/send-CertifiedCodeToMail", {
         email: email,
       })
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
+          dispatch({ type: "closeTransLoading" });
           setSendCertified(false);
           dispatch({
             type: "toggleCommonSuccess",
             data: "인증번호를 전송했습니다.",
           });
         } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "closeTransLoading" });
           dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });

@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "@/app/store/store";
 import CommonError from "../components/modal/CommonError";
 import CommonSuccess from "../components/modal/CommonSuccess";
+import TransLoading from "../components/loading/TransLoading";
 
 export default function Page() {
   const [state, setState] = useState("login");
@@ -25,6 +26,7 @@ export default function Page() {
         <NewTeamCreate />
         <CommonError />
         <CommonSuccess />
+        <TransLoading />
       </Provider>
     </div>
   );
