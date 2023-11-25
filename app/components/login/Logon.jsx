@@ -40,10 +40,11 @@ export default function Logon(props) {
           setEmail(res.data.email);
         } else if (res.response.status === HttpStatusCode.BadRequest) {
           dispatch({ type: "toggleCommonError", data: res.response.data });
+          setState("login");
         }
       });
     }
-  }, [state]);
+  }, [state, setState, dispatch, setName, setEmail]);
 
   const handleLoginClick = (e) => {
     e.preventDefault();
