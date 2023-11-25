@@ -11,7 +11,7 @@ export default function Home() {
           테스트용 정적 사이트입니다. <br />
         </p>
         <a
-          href="/login"
+          href="/web/login"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-blue"
         >
           둘러보기
