@@ -38,6 +38,8 @@ export default function Logon(props) {
         if (res.status === HttpStatusCode.Ok) {
           setName(res.data.name);
           setEmail(res.data.email);
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });
     }

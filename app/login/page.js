@@ -6,6 +6,8 @@ import Logon from "@/app/components/login/Logon";
 import NewTeamCreate from "@/app/components/modal/NewTeamCreate";
 import { Provider } from "react-redux";
 import store from "@/app/store/store";
+import CommonError from "../components/modal/CommonError";
+import CommonSuccess from "../components/modal/CommonSuccess";
 
 export default function Page() {
   const [state, setState] = useState("login");
@@ -16,11 +18,13 @@ export default function Page() {
 
   return (
     <div className="bg-gray-200 h-screen flex items-center justify-center">
-      <Login state={state} setState={setState} />
-      <Register state={state} setState={setState} />
       <Provider store={store}>
+        <Login state={state} setState={setState} />
+        <Register state={state} setState={setState} />
         <Logon state={state} setState={setState} />
         <NewTeamCreate />
+        <CommonError />
+        <CommonSuccess />
       </Provider>
     </div>
   );

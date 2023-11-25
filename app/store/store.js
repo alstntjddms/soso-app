@@ -11,6 +11,10 @@ const initialState = {
   showData: false,
   createData: false,
   newTeamCreate: false,
+  commonError: false,
+  commonErrorInfo: { name: "", message: "", errorDate: "" },
+  commonSuccess: false,
+  commonSuccessInfo: { message: "" },
 
   datas: {
     요청: [
@@ -165,6 +169,14 @@ function reducer(state = initialState, action) {
       break;
     case "toggleNewTeamCreate":
       newState.newTeamCreate = !state.newTeamCreate;
+      break;
+    case "toggleCommonError":
+      newState.commonError = !state.commonError;
+      newState.commonErrorInfo = action.data;
+      break;
+    case "toggleCommonSuccess":
+      newState.commonSuccess = !state.commonSuccess;
+      newState.commonSuccessInfo.message = action.data;
       break;
   }
   return newState;

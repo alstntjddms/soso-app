@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import HorizonLine from "../etc/HorizonLine";
 import { Button, Checkbox, Input, Label } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 import sosoAPI from "../framework/api/sosoAPI";
 import { HttpStatusCode } from "axios";
 
 export default function Login(props) {
-  const router = useRouter();
+  const dispatch = useDispatch();
+
   const { state, setState } = props;
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +21,8 @@ export default function Login(props) {
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           setState("logon");
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });
   };

@@ -4,10 +4,13 @@ import { Button, Input } from "@nextui-org/react";
 import { MailIcon } from "./icons/MailIcon";
 import { EyeSlashFilledIcon } from "./icons/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "./icons/EyeFilledIcon";
-import sosoAPI from "../framework/api/sosoAPI";
 import { HttpStatusCode } from "axios";
+import { useDispatch } from "react-redux";
+import sosoAPI from "../framework/api/sosoAPI";
 
 export default function Register(props) {
+  const dispatch = useDispatch();
+
   const { state, setState } = props;
   const [sendCertified, setSendCertified] = useState(true);
   const [checkIdDuplicated, setCheckIdDuplicated] = useState(false);
@@ -39,7 +42,12 @@ export default function Register(props) {
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           setState("login");
-          alert("회원가입을 성공했습니다.");
+          dispatch({
+            type: "toggleCommonSuccess",
+            data: "회원가입을 성공했습니다.",
+          });
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });
   };
@@ -52,7 +60,12 @@ export default function Register(props) {
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           setSendCertified(false);
-          alert("인증번호를 전송했습니다.");
+          dispatch({
+            type: "toggleCommonSuccess",
+            data: "인증번호를 전송했습니다.",
+          });
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });
   };
@@ -66,7 +79,12 @@ export default function Register(props) {
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           setCheckCertified(true);
-          alert("인증을 성공했습니다.");
+          dispatch({
+            type: "toggleCommonSuccess",
+            data: "인증을 성공했습니다.",
+          });
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });
   };
@@ -77,10 +95,14 @@ export default function Register(props) {
         loginId: loginId,
       })
       .then((res) => {
-        console.log(res);
         if (res.status === HttpStatusCode.Ok) {
           setCheckIdDuplicated(true);
-          alert("사용 가능한 아이디 입니다.");
+          dispatch({
+            type: "toggleCommonSuccess",
+            data: "사용 가능한 아이디 입니다.",
+          });
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });
   };

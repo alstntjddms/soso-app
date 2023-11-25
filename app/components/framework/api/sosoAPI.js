@@ -38,10 +38,6 @@ export default class sosoAPI {
       })
       .catch((res) => {
         if (res.response.status === HttpStatusCode.BadRequest) {
-          alert(res.response.data.name);
-          console.log(res.response.data.name);
-          console.log(res.response.data.message);
-          console.log(res.response.data.errorDate);
           return res;
         } else {
           alert("알수없는 에러");
