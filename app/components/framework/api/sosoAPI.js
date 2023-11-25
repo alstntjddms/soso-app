@@ -1,6 +1,6 @@
 import axios, { HttpStatusCode } from "axios";
 
-const SERVER_URL = process.env.URL;
+const SERVER_URL = process.env.NEXT_PUBLIC_URL;
 
 export default class sosoAPI {
   static async get(url) {

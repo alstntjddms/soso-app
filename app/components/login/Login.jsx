@@ -3,6 +3,7 @@ import HorizonLine from "../etc/HorizonLine";
 import { Button, Checkbox, Input, Label } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import sosoAPI from "../framework/api/sosoAPI";
+import { HttpStatusCode } from "axios";
 
 export default function Login(props) {
   const router = useRouter();
@@ -17,10 +18,9 @@ export default function Login(props) {
         password: password,
       })
       .then((res) => {
-        if (res.data != null) {
+        if (res.status === HttpStatusCode.Ok) {
           setState("logon");
         }
-        console.log(res);
       });
   };
 
