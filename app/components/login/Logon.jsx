@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HorizonLine from "../etc/HorizonLine";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+import sosoAPI from "../framework/api/sosoAPI";
+import { HttpStatusCode } from "axios";
 
 export default function Logon(props) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { state, setState } = props;
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const aaaa = [
     {
@@ -26,6 +31,17 @@ export default function Logon(props) {
       description: "this is ccc",
     },
   ];
+
+  useEffect(() => {
+    if (state === "logon") {
+      sosoAPI.get("/login/member").then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          setName(res.data.name);
+          setEmail(res.data.email);
+        }
+      });
+    }
+  }, [state]);
 
   const handleLoginClick = (e) => {
     e.preventDefault();
@@ -92,7 +108,7 @@ export default function Logon(props) {
               label="이름"
               variant="bordered"
               labelPlacement="inside"
-              value="전민수"
+              value={name}
               isDisabled
             />
             <Input
@@ -102,7 +118,7 @@ export default function Logon(props) {
               label="이메일"
               variant="bordered"
               labelPlacement="inside"
-              value="soso@naver.com"
+              value={email}
               isDisabled
             />
           </div>
