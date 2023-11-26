@@ -16,35 +16,40 @@ export default function Logon(props) {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
+    const findLoginMember = async () => {
+      try {
+        const res = await sosoAPI.get("/login/member");
+        if (res.status === HttpStatusCode.Ok) {
+          setName(res.data.name);
+          setEmail(res.data.email);
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
+          setState("login");
+        }
+      } catch (error) {
+        console.error("Error fetching login member:", error);
+      }
+    };
+
+    const findTeamsByLoginId = async () => {
+      try {
+        const res = await sosoAPI.get("/domain/teams");
+        if (res.status === HttpStatusCode.Ok) {
+          dispatch({ type: "setTeams", data: res.data });
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
+          setState("login");
+        }
+      } catch (error) {
+        console.error("Error fetching teams by login ID:", error);
+      }
+    };
+
     if (state === "logon") {
       findLoginMember();
       findTeamsByLoginId();
     }
-  }, [state, setState, dispatch, setName, setEmail]);
-
-  const findLoginMember = () => {
-    sosoAPI.get("/login/member").then((res) => {
-      if (res.status === HttpStatusCode.Ok) {
-        setName(res.data.name);
-        setEmail(res.data.email);
-      } else if (res.response.status === HttpStatusCode.BadRequest) {
-        dispatch({ type: "toggleCommonError", data: res.response.data });
-        setState("login");
-      }
-    });
-  };
-
-  const findTeamsByLoginId = () => {
-    sosoAPI.get("/domain/teams").then((res) => {
-      if (res.status === HttpStatusCode.Ok) {
-        console.log(res.data);
-        dispatch({ type: "setTeams", data: res.data });
-      } else if (res.response.status === HttpStatusCode.BadRequest) {
-        dispatch({ type: "toggleCommonError", data: res.response.data });
-        setState("login");
-      }
-    });
-  };
+  }, [state, dispatch, setState]);
 
   const handleLoginClick = (e) => {
     e.preventDefault();
