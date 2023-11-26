@@ -15,6 +15,7 @@ const initialState = {
   commonErrorInfo: { name: "", message: "", errorDate: "" },
   commonSuccess: false,
   commonSuccessInfo: { message: "" },
+  teams: [],
 
   datas: {
     요청: [
@@ -177,6 +178,9 @@ function reducer(state = initialState, action) {
     case "toggleCommonSuccess":
       newState.commonSuccess = !state.commonSuccess;
       newState.commonSuccessInfo.message = action.data;
+      break;
+    case "setTeams":
+      newState.teams = action.data;
       break;
   }
   return newState;

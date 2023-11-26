@@ -1,24 +1,59 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import {
   Button,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
-import { useDispatch, useSelector } from "react-redux";
+import sosoAPI from "../framework/api/sosoAPI";
+import { HttpStatusCode } from "axios";
 
 export default function NewTeamCreate() {
   const dispatch = useDispatch();
   const newTeamCreate = useSelector((state) => state.newTeamCreate);
+  const [teamName, setTeamName] = useState("");
 
   const onClose = () => {
     dispatch({ type: "toggleNewTeamCreate" });
   };
 
+  const createTeam = () => {
+    sosoAPI
+      .post("/domain/team", {
+        teamName: teamName,
+      })
+      .then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          dispatch({
+            type: "toggleCommonSuccess",
+            data: "팀 생성을 성공했습니다.",
+          });
+          findTeamsByLoginId();
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
+        }
+      });
+    onClose();
+  };
+
+  const findTeamsByLoginId = () => {
+    sosoAPI.get("/domain/teams").then((res) => {
+      if (res.status === HttpStatusCode.Ok) {
+        console.log(res.data);
+        dispatch({ type: "setTeams", data: res.data });
+      } else if (res.response.status === HttpStatusCode.BadRequest) {
+        dispatch({ type: "toggleCommonError", data: res.response.data });
+      }
+    });
+  };
+
   return (
     <Modal
-      size="3xl"
+      size="xl"
       isOpen={newTeamCreate}
       onOpenChange={onClose}
       isDismissable={false}
@@ -30,30 +65,21 @@ export default function NewTeamCreate() {
               새로운 팀 생성
             </ModalHeader>
             <ModalBody>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-                amet hendrerit risus, sed porttitor quam.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-                amet hendrerit risus, sed porttitor quam.
-              </p>
-              <p>
-                Magna exercitation reprehenderit magna aute tempor cupidatat
-                consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                aliqua enim laboris do dolor eiusmod. Et mollit incididunt nisi
-                consectetur esse laborum eiusmod pariatur proident Lorem eiusmod
-                et. Culpa deserunt nostrud ad veniam.
-              </p>
+              <Input
+                tabIndex={-1}
+                autoFocus
+                label="팀명"
+                placeholder="팀 이름을 입력하세요."
+                variant="bordered"
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+              />
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>
                 닫기
               </Button>
-              <Button color="primary" onPress={onClose}>
+              <Button color="primary" onPress={createTeam}>
                 팀 생성
               </Button>
             </ModalFooter>

@@ -3,7 +3,6 @@ import Login from "@/app/components/login/Login";
 import { useEffect, useState } from "react";
 import Register from "@/app/components/login/Register";
 import Logon from "@/app/components/login/Logon";
-import NewTeamCreate from "@/app/components/modal/NewTeamCreate";
 import { Provider } from "react-redux";
 import store from "@/app/store/store";
 import CommonError from "../components/modal/CommonError";
@@ -23,7 +22,6 @@ export default function Page() {
         <Login state={state} setState={setState} />
         <Register state={state} setState={setState} />
         <Logon state={state} setState={setState} />
-        <NewTeamCreate />
         <CommonError />
         <CommonSuccess />
         <TransLoading />

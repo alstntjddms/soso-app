@@ -2,49 +2,49 @@ import React, { useState, useEffect } from "react";
 import HorizonLine from "../etc/HorizonLine";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import sosoAPI from "../framework/api/sosoAPI";
 import { HttpStatusCode } from "axios";
+import NewTeamCreate from "../modal/NewTeamCreate";
 
 export default function Logon(props) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { state, setState } = props;
-
+  const teams = useSelector((state) => state.teams);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const aaaa = [
-    {
-      label: "aaa",
-      value: "aaa",
-      description: "this is aaa",
-    },
-    {
-      label: "bbb",
-      value: "bbb",
-      description: "this is bbb",
-    },
-    {
-      label: "ccc",
-      value: "ccc",
-      description: "this is ccc",
-    },
-  ];
-
   useEffect(() => {
     if (state === "logon") {
-      sosoAPI.get("/login/member").then((res) => {
-        if (res.status === HttpStatusCode.Ok) {
-          setName(res.data.name);
-          setEmail(res.data.email);
-        } else if (res.response.status === HttpStatusCode.BadRequest) {
-          dispatch({ type: "toggleCommonError", data: res.response.data });
-          setState("login");
-        }
-      });
+      findLoginMember();
+      findTeamsByLoginId();
     }
   }, [state, setState, dispatch, setName, setEmail]);
+
+  const findLoginMember = () => {
+    sosoAPI.get("/login/member").then((res) => {
+      if (res.status === HttpStatusCode.Ok) {
+        setName(res.data.name);
+        setEmail(res.data.email);
+      } else if (res.response.status === HttpStatusCode.BadRequest) {
+        dispatch({ type: "toggleCommonError", data: res.response.data });
+        setState("login");
+      }
+    });
+  };
+
+  const findTeamsByLoginId = () => {
+    sosoAPI.get("/domain/teams").then((res) => {
+      if (res.status === HttpStatusCode.Ok) {
+        console.log(res.data);
+        dispatch({ type: "setTeams", data: res.data });
+      } else if (res.response.status === HttpStatusCode.BadRequest) {
+        dispatch({ type: "toggleCommonError", data: res.response.data });
+        setState("login");
+      }
+    });
+  };
 
   const handleLoginClick = (e) => {
     e.preventDefault();
@@ -93,13 +93,13 @@ export default function Logon(props) {
             label="참여 가능 팀 목록"
             variant="bordered"
             placeholder="프로젝트를 선택해 주세요."
-            defaultSelectedKeys={["bbb"]}
+            // defaultSelectedKeys={["bbb"]}
             className="w-full"
             fullWidth
           >
-            {aaaa.map((animal) => (
-              <SelectItem key={animal.value} value={animal.value}>
-                {animal.label}
+            {teams.map((team) => (
+              <SelectItem key={team.id} value={team.id}>
+                {team.teamName}
               </SelectItem>
             ))}
           </Select>
@@ -161,6 +161,7 @@ export default function Logon(props) {
           </Button>
         </div>
       </div>
+      <NewTeamCreate />
     </div>
   );
 }
