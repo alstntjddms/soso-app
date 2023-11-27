@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HorizonLine from "../etc/HorizonLine";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Tooltip } from "@nextui-org/react";
 import { MailIcon } from "./icons/MailIcon";
 import { EyeSlashFilledIcon } from "./icons/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "./icons/EyeFilledIcon";
@@ -266,15 +266,32 @@ export default function Register(props) {
           </div>
         </div>
         <div className="mb-4"></div>
-        <Button
-          variant="bordered"
-          color="green"
-          className="w-full hover:bg-cyan-950 hover:text-white"
-          onClick={handleRegisterClick}
-          isDisabled={!checkIdDuplicated || !checkCertified || sendCertified}
+        <Tooltip
+          showArrow={true}
+          closeDelay={0}
+          content={
+            <div className="px-1 py-2">
+              <div className="text-tiny">
+                아이디 중복 확인과 이메일 인증을 받아야 회원가입할 수 있어요!
+              </div>
+            </div>
+          }
+          isDisabled={checkIdDuplicated && checkCertified && !sendCertified}
         >
-          회원가입
-        </Button>
+          <div>
+            <Button
+              variant="bordered"
+              color="green"
+              className="w-full hover:bg-cyan-950 hover:text-white"
+              onClick={handleRegisterClick}
+              isDisabled={
+                !checkIdDuplicated || !checkCertified || sendCertified
+              }
+            >
+              회원가입
+            </Button>
+          </div>
+        </Tooltip>
       </div>
     </div>
   );
