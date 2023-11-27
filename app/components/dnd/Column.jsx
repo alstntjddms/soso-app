@@ -41,12 +41,12 @@ export default function Column(props) {
                 >
                   {columnDatas.map((key, index) => (
                     <div
-                      key={key.seq.toString()}
+                      key={key.id.toString()}
                       onClick={() => handleCardClick(key)}
                     >
                       <Draggable
-                        // key={key.seq.toString()}
-                        draggableId={key.seq.toString()}
+                        // key={key.id.toString()}
+                        draggableId={key.id.toString()}
                         index={key.index}
                       >
                         {(provided2, snapshot2) => (
@@ -61,7 +61,9 @@ export default function Column(props) {
                                 border: snapshot2.isDragging
                                   ? "2px solid yellow"
                                   : null,
-                                transform: snapshot2.isDragging ? "scale(1.1)" : null,
+                                transform: snapshot2.isDragging
+                                  ? "scale(1.1)"
+                                  : null,
                               }}
                               className="hover:brightness-75"
                             >

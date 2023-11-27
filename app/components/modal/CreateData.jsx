@@ -24,14 +24,14 @@ export default function CreateData() {
   const [title, setTitle] = useState(data.title);
   const [content, setContent] = useState(data.content);
 
-  // 테스트 seq
-  const [seq, setSeq] = useState(14);
+  // 테스트 id
+  const [id, setId] = useState(14);
 
   useEffect(() => {
-    // 테스트 seq
+    // 테스트 id
     const intervalId = setInterval(() => {
-      setSeq((prevSeq) => prevSeq + 1);
-      console.log("seq 올라감");
+      setId((prevId) => prevId + 1);
+      console.log("id 올라감");
     }, 10000); // 10000 milliseconds = 10 seconds
     return () => {
       clearInterval(intervalId);
@@ -45,8 +45,7 @@ export default function CreateData() {
     );
 
     const result = addData(datas, "요청", {
-      //   seq: 14,
-      seq: seq,
+      id: id,
       title: title,
       content: content,
       index: 0,
@@ -62,7 +61,7 @@ export default function CreateData() {
     dispatch({
       type: "setData",
       data: {
-        seq: 0,
+        id: 0,
         title: "",
         content: "",
         index: 0,
