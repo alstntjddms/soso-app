@@ -16,7 +16,6 @@ export default function Register(props) {
   const [checkIdDuplicated, setCheckIdDuplicated] = useState(false);
   const [checkCertified, setCheckCertified] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
