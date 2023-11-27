@@ -46,6 +46,15 @@ export default function Register(props) {
             type: "toggleCommonSuccess",
             data: "회원가입을 성공했습니다.",
           });
+          // 초기화
+          setLoginId("");
+          setPassword("");
+          setName("");
+          setEmail("");
+          setCertifiedCode("");
+          setCheckIdDuplicated(false);
+          setSendCertified(true);
+          setCheckCertified(false);
         } else if (res.response.status === HttpStatusCode.BadRequest) {
           dispatch({ type: "toggleCommonError", data: res.response.data });
         }
@@ -53,7 +62,6 @@ export default function Register(props) {
   };
 
   const handleSendCertified = async () => {
-    dispatch({ type: "openTransLoading" });
     await sosoAPI
       .post("/register/send-CertifiedCodeToMail", {
         email: email,
@@ -160,6 +168,7 @@ export default function Register(props) {
                 label="아이디"
                 variant="flat"
                 labelPlacement="inside"
+                value={loginId}
                 isDisabled={checkIdDuplicated}
                 onValueChange={setLoginId}
               />
@@ -178,6 +187,7 @@ export default function Register(props) {
               label="비밀번호"
               variant="flat"
               labelPlacement="inside"
+              value={password}
               onValueChange={setPassword}
               type={isVisible ? "text" : "password"}
               endContent={
@@ -203,6 +213,7 @@ export default function Register(props) {
               label="이름"
               variant="flat"
               labelPlacement="inside"
+              value={name}
               onValueChange={setName}
             />
             {sendCertified ? (
@@ -214,6 +225,7 @@ export default function Register(props) {
                   label="이메일"
                   variant="flat"
                   placeholder="soso@naver.com"
+                  value={email}
                   onValueChange={setEmail}
                   endContent={
                     <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -237,6 +249,7 @@ export default function Register(props) {
                   type="text"
                   label="인증번호"
                   variant="flat"
+                  value={certifiedCode}
                   labelPlacement="inside"
                   isDisabled={checkCertified}
                   onValueChange={setCertifiedCode}

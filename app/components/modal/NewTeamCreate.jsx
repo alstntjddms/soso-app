@@ -33,6 +33,7 @@ export default function NewTeamCreate() {
             data: "팀 생성을 성공했습니다.",
           });
           findTeamsByLoginId();
+          setTeamName("");
         } else if (res.response.status === HttpStatusCode.BadRequest) {
           dispatch({ type: "toggleCommonError", data: res.response.data });
         }

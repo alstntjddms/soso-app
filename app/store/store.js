@@ -2,19 +2,16 @@ import { legacy_createStore as createStore } from "@reduxjs/toolkit";
 
 // 초기 상태 정의
 const initialState = {
-  profile: "",
-  currentPage: "",
   Loading: "flex",
-  TransLoading: "none",
-  FcmModal: false,
-  darkMode: true,
   showData: false,
   createData: false,
+  TransLoading: "none",
   newTeamCreate: false,
   commonError: false,
   commonErrorInfo: { name: "", message: "", errorDate: "" },
   commonSuccess: false,
   commonSuccessInfo: { message: "" },
+
   teams: [],
 
   datas: {
@@ -130,12 +127,6 @@ function reducer(state = initialState, action) {
   const newState = { ...state };
   // state 변경
   switch (action.type) {
-    case "setProfile":
-      newState.profile = action.data;
-      break;
-    case "setCuurentPage":
-      newState.currentPage = action.data;
-      break;
     case "openLoading":
       newState.Loading = "flex";
       break;
@@ -148,15 +139,7 @@ function reducer(state = initialState, action) {
     case "closeTransLoading":
       newState.TransLoading = "none";
       break;
-    case "toggleFcmModal":
-      newState.FcmModal = !state.FcmModal;
-      break;
-    case "toggleDarkMode":
-      newState.darkMode = !state.darkMode;
-      break;
     case "setDatas":
-      console.log("datas");
-      console.log(action.data);
       newState.datas = action.data;
       break;
     case "setData":

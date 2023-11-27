@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HorizonLine from "../etc/HorizonLine";
 import { Button, Checkbox, Input, Label } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import sosoAPI from "../framework/api/sosoAPI";
 import { HttpStatusCode } from "axios";
+import Cookies from "js-cookie";
 
 export default function Login(props) {
   const dispatch = useDispatch();
@@ -11,6 +12,11 @@ export default function Login(props) {
   const { state, setState } = props;
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
+  const [isSelected, setIsSelected] = useState(true);
+
+  useEffect(() => {
+    setLoginId(Cookies.get("loginId") || "");
+  }, [isSelected, state]);
 
   const handleLoginClick = async (e) => {
     await sosoAPI
@@ -20,7 +26,14 @@ export default function Login(props) {
       })
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
+          setLoginId("");
+          setPassword("");
           setState("logon");
+          if (isSelected) {
+            Cookies.set("loginId", loginId);
+          } else {
+            Cookies.remove("loginId");
+          }
         } else if (res.response.status === HttpStatusCode.BadRequest) {
           dispatch({ type: "toggleCommonError", data: res.response.data });
         }
@@ -35,6 +48,10 @@ export default function Login(props) {
     if (e.key === "Enter") {
       handleLoginClick();
     }
+  };
+
+  const handleToggleIdRemember = () => {
+    setIsSelected(!isSelected);
   };
 
   return (
@@ -81,6 +98,7 @@ export default function Login(props) {
               label="아이디"
               variant="flat"
               labelPlacement="inside"
+              value={loginId}
               onValueChange={setLoginId}
             />
             <Input
@@ -90,14 +108,20 @@ export default function Login(props) {
               label="비밀번호"
               variant="flat"
               labelPlacement="inside"
+              value={password}
               onValueChange={setPassword}
               onKeyDown={handleKeyDownEnter}
             />
           </div>
         </div>
         <div className="flex justify-between items-center mt-4 mb-6">
-          <Checkbox size="sm" radius="sm" defaultSelected>
-            로그인 상태 유지
+          <Checkbox
+            size="sm"
+            radius="sm"
+            isSelected={isSelected}
+            onValueChange={handleToggleIdRemember}
+          >
+            아이디 기억하기
           </Checkbox>
           <a href="#" className="text-sm text-cyan-950">
             비밀번호 찾기
