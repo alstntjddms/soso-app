@@ -37,7 +37,7 @@ export default function ShowData(props) {
     dispatch({
       type: "setData",
       data: {
-        seq: 0,
+        id: 0,
         title: "",
         content: "",
         index: 0,
@@ -47,13 +47,13 @@ export default function ShowData(props) {
 
   const clickSaveBtn = () => {
     const updatedData = {
-      seq: data.seq,
+      id: data.id,
       title: title,
       content: localStorage.getItem("minsu"),
       index: data.index,
     };
 
-    const updatedDatas = updateDatasBySeq(updatedData, datas);
+    const updatedDatas = updateDatasById(updatedData, datas);
     // dispatch({ type: "setDatas", data: updatedDatas });
     updateData(updatedDatas);
     onClose();
@@ -139,12 +139,12 @@ export default function ShowData(props) {
   );
 }
 
-const updateDatasBySeq = (newData, datas) => {
+const updateDatasById = (newData, datas) => {
   const updatedDatas = { ...datas };
   for (const key in updatedDatas) {
     const keyArray = updatedDatas[key];
     updatedDatas[key] = keyArray.map((data) => {
-      if (data.seq === newData.seq) {
+      if (data.id === newData.id) {
         return { ...data, ...newData };
       }
       return data;

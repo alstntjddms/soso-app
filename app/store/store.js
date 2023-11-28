@@ -27,35 +27,35 @@ const initialState = {
         id: 2,
         title: "타이틀2",
         content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-1"}]}]}',
+          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-2"}]}]}',
         index: 1,
       },
       {
         id: 8,
         title: "타이틀3",
         content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-2"}]}]}',
+          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-3"}]}]}',
         index: 2,
       },
       {
         id: 9,
         title: "타이틀4",
         content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-3"}]}]}',
+          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-4"}]}]}',
         index: 3,
       },
       {
         id: 10,
         title: "타이틀5",
         content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-4"}]}]}',
+          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-5"}]}]}',
         index: 4,
       },
       {
         id: 11,
         title: "타이틀6",
         content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-5"}]}]}',
+          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-6"}]}]}',
         index: 5,
       },
     ],

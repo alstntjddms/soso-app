@@ -21,7 +21,6 @@ export default function Row(props) {
   }, [datas]);
 
   const onDragEnd = (result) => {
-    // dispatch({ type: "openTransLoading" });
     if (result.combine) {
       if (result.type === "COLUMN") {
         const shallow = [...ordered];
