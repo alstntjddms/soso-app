@@ -31,13 +31,12 @@ export default function Page() {
       await sosoAPI.get("/domain/datas").then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           setDatas(res.data);
-          console.log(res.data);
         } else if (res.response.status === HttpStatusCode.BadRequest) {
           dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });
     } catch (error) {
-      console.error("Error fetching login member:", error);
+      dispatch({ type: "toggleCommonError", data: error });
     } finally {
       dispatch({ type: "closeLoading" });
     }
@@ -45,7 +44,7 @@ export default function Page() {
 
   const patchDatas = async (datas) => {
     try {
-      dispatch({ type: "openLoading" });
+      dispatch({ type: "openTransLoading" });
       await sosoAPI.patch("/domain/datas", datas).then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           console.log(res);
@@ -54,10 +53,10 @@ export default function Page() {
         }
       });
     } catch (error) {
-      console.error("Error fetching login member:", error);
+      dispatch({ type: "toggleCommonError", data: error });
     } finally {
       findDatasByLoginMember();
-      dispatch({ type: "closeLoading" });
+      dispatch({ type: "closeTransLoading" });
     }
   };
 

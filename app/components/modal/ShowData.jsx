@@ -37,12 +37,12 @@ export default function ShowData(props) {
     dispatch({
       type: "setData",
       data: {
-        id: 0,
-        dataIndex: 0,
+        id: "",
+        dataIndex: "",
         state: "",
-        fromMemberId: 0,
-        toMemberId: 0,
-        teamId: 0,
+        fromMemberId: "",
+        toMemberId: "",
+        teamId: "",
         title: "",
         content: "",
         delYn: false,

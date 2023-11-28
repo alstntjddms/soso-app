@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import CustomCard from "@/app/components/card/CustomCard";
 import { useDispatch } from "react-redux";
+import sosoAPI from "../framework/api/sosoAPI";
+import { HttpStatusCode } from "axios";
 
 export default function Column(props) {
   const dispatch = useDispatch();
@@ -10,8 +12,18 @@ export default function Column(props) {
   // columnDatas.sort((a, b) => a.dataIndex - b.dataIndex);
 
   const handleCardClick = async (data) => {
-    dispatch({ type: "setData", data: data });
+    await getData(data);
     dispatch({ type: "toggleShowData" });
+  };
+
+  const getData = async (data) => {
+    await sosoAPI.get("/domain/data/" + data.id).then((res) => {
+      if (res.status === HttpStatusCode.Ok) {
+        dispatch({ type: "setData", data: res.data });
+      } else if (res.response.status === HttpStatusCode.BadRequest) {
+        dispatch({ type: "toggleCommonError", data: res.response.data });
+      }
+    });
   };
 
   return (

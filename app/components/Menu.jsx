@@ -6,9 +6,6 @@ import Link from "next/link";
 export default function Menu() {
   const dispatch = useDispatch();
 
-  const handleLinkClick = () => {
-    dispatch({ type: "openLoading" });
-  };
   return (
     <Accordion
       isCompact
