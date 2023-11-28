@@ -6,7 +6,7 @@ const reorder = (list, startIndex, endIndex, Yn) => {
 
   if (Yn === true) {
     result.forEach((item, index) => {
-      item.index = index;
+      item.dataIndex = index;
     });
   }
 
@@ -21,7 +21,7 @@ export const addData = (datas, key, data) => {
   current.unshift(data);
 
   current.forEach((item, index) => {
-    item.index = index;
+    item.dataIndex = index;
   });
   const result = {
     ...datas,
@@ -52,12 +52,12 @@ export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
     // remove from original
     current.splice(source.index, 1);
     current.forEach((item, index) => {
-      item.index = index;
+      item.dataIndex = index;
     });
     // insert into next
     next.splice(destination.index, 0, target);
     next.forEach((item, index) => {
-      item.index = index;
+      item.dataIndex = index;
     });
     const result = {
       ...quoteMap,

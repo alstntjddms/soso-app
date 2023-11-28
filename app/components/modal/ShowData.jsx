@@ -38,9 +38,16 @@ export default function ShowData(props) {
       type: "setData",
       data: {
         id: 0,
+        dataIndex: 0,
+        state: "",
+        fromMemberId: 0,
+        toMemberId: 0,
+        teamId: 0,
         title: "",
         content: "",
-        index: 0,
+        delYn: false,
+        regDate: "",
+        updDate: "",
       },
     });
   };

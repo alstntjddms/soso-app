@@ -5,8 +5,8 @@ import Register from "@/app/components/login/Register";
 import Logon from "@/app/components/login/Logon";
 import { Provider } from "react-redux";
 import store from "@/app/store/store";
-import CommonError from "../components/modal/CommonError";
-import CommonSuccess from "../components/modal/CommonSuccess";
+import CommonError from "../components/modal/common/CommonError";
+import CommonSuccess from "../components/modal/common/CommonSuccess";
 import TransLoading from "../components/loading/TransLoading";
 
 export default function Page() {

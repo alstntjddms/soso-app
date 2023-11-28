@@ -14,12 +14,15 @@ export default class sosoAPI {
         }
       })
       .catch((res) => {
-        if (res.response.status === 400) {
-          // CustomException 예외
-          alert(res.response.data.name);
-          console.log(res.response.data.name);
-          console.log(res.response.data.message);
-          console.log(res.response.data.errorDate);
+        if (res.response.status === HttpStatusCode.BadRequest) {
+          if (
+            res.response.data.name === "COOKIES_NOT_FOUND" ||
+            res.response.data.name === "JWT_FAIL_VALIDATE"
+          ) {
+            alert("로그인 정보를 잃었습니다.");
+            window.location.replace("/web/login");
+          }
+          return res;
         } else {
           alert("알수 없는 에러발생");
         }
@@ -38,6 +41,13 @@ export default class sosoAPI {
       })
       .catch((res) => {
         if (res.response.status === HttpStatusCode.BadRequest) {
+          if (
+            res.response.data.name === "COOKIES_NOT_FOUND" ||
+            res.response.data.name === "JWT_FAIL_VALIDATE"
+          ) {
+            alert("로그인 정보를 잃었습니다.");
+            window.location.replace("/web/login");
+          }
           return res;
         } else {
           alert("알수없는 에러");

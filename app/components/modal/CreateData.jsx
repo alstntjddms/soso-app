@@ -14,6 +14,8 @@ import { addData } from "../dnd/reorder";
 // import { Editor as NovelEditor } from "novel";
 // import { Editor as NovelEditor } from "../framework/novel/dist";
 import { Editor } from "@/framework/novel";
+import sosoAPI from "../framework/api/sosoAPI";
+import { HttpStatusCode } from "axios";
 
 export default function CreateData() {
   const dispatch = useDispatch();
@@ -21,36 +23,35 @@ export default function CreateData() {
   const datas = useSelector((state) => state.datas);
   const data = useSelector((state) => state.data);
   const [saveStatus, setSaveStatus] = useState("Saved");
+
   const [title, setTitle] = useState(data.title);
   const [content, setContent] = useState(data.content);
+  const [fromMemberId, setFromMemberId] = useState(data.fromMemberId);
 
-  // 테스트 id
-  const [id, setId] = useState(14);
-
-  useEffect(() => {
-    // 테스트 id
-    const intervalId = setInterval(() => {
-      setId((prevId) => prevId + 1);
-      console.log("id 올라감");
-    }, 10000); // 10000 milliseconds = 10 seconds
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  const clickSaveBtn = () => {
+  const clickSaveBtn = async () => {
     // 서버로 데이터 전송
     console.log(
-      "서버로 전송 데이터 : " + "title : " + title + "content : " + content
+      "서버로 전송 데이터 : " +
+        "title : " +
+        title +
+        "content : " +
+        content +
+        "fromMemberId : " +
+        fromMemberId
     );
-
-    const result = addData(datas, "요청", {
-      id: id,
-      title: title,
-      content: content,
-      index: 0,
-    });
-    dispatch({ type: "setDatas", data: result });
+    await sosoAPI
+      .post("/domain/data", {
+        title: title,
+        content: content,
+        fromMemberId: fromMemberId,
+      })
+      .then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          console.log(res.data);
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
+        }
+      });
 
     // 모달 닫기, data 초기화
     onClose();
@@ -62,22 +63,29 @@ export default function CreateData() {
       type: "setData",
       data: {
         id: 0,
+        dataIndex: 0,
+        state: "",
+        fromMemberId: 0,
+        toMemberId: 0,
+        teamId: 0,
         title: "",
         content: "",
-        index: 0,
+        delYn: false,
+        regDate: "",
+        updDate: "",
       },
     });
     setTitle("");
     setContent("");
-
+    setFromMemberId("");
     //로컬스토리지삭제
     localStorage.removeItem("minsu");
   };
 
-  useEffect(() => {
-    setTitle(data.title);
-    setContent(data.content);
-  }, [data.title, data.content]);
+  // useEffect(() => {
+  //   setTitle(data.title);
+  //   setContent(data.content);
+  // }, [data.title, data.content]);
 
   const contentSave = () => {
     setContent(localStorage.getItem("minsu"));
@@ -109,6 +117,15 @@ export default function CreateData() {
             variant="bordered"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+          />
+          <Input
+            tabIndex={-1}
+            autoFocus
+            label="받는 사람"
+            placeholder="받는 사람을 입력하세요."
+            variant="bordered"
+            value={fromMemberId}
+            onChange={(e) => setFromMemberId(e.target.value)}
           />
           <div>
             <Editor

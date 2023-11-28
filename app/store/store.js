@@ -13,113 +13,19 @@ const initialState = {
   commonSuccessInfo: { message: "" },
 
   teams: [],
-
-  datas: {
-    요청: [
-      {
-        id: 1,
-        title: "타이틀1",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-1"}]}]}',
-        index: 0,
-      },
-      {
-        id: 2,
-        title: "타이틀2",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-2"}]}]}',
-        index: 1,
-      },
-      {
-        id: 8,
-        title: "타이틀3",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-3"}]}]}',
-        index: 2,
-      },
-      {
-        id: 9,
-        title: "타이틀4",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-4"}]}]}',
-        index: 3,
-      },
-      {
-        id: 10,
-        title: "타이틀5",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-5"}]}]}',
-        index: 4,
-      },
-      {
-        id: 11,
-        title: "타이틀6",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 1-6"}]}]}',
-        index: 5,
-      },
-    ],
-    진행중: [
-      {
-        id: 3,
-        title: "타이틀7",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 2-1"}]}]}',
-        index: 0,
-      },
-      {
-        id: 4,
-        title: "타이틀8",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 2-2"}]}]}',
-        index: 1,
-      },
-    ],
-    검토요청: [
-      {
-        id: 12,
-        title: "타이틀9",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 3-1"}]}]}',
-        index: 0,
-      },
-      {
-        id: 13,
-        title: "타이틀10",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 3-2"}]}]}',
-        index: 1,
-      },
-    ],
-    완료: [
-      {
-        id: 5,
-        title: "타이틀11",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 4-1"}]}]}',
-        index: 0,
-      },
-      {
-        id: 6,
-        title: "타이틀12",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 4-2"}]}]}',
-        index: 1,
-      },
-      {
-        id: 7,
-        title: "타이틀13",
-        content:
-          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"테스트 콘텐트 4-3"}]}]}',
-        index: 2,
-      },
-    ],
-  },
+  datas: {},
   data: {
-    id: 0,
+    id: "",
+    dataIndex: "",
+    state: "",
+    fromMemberId: "",
+    toMemberId: "",
+    teamId: "",
     title: "",
     content: "",
-    index: 0,
+    delYn: false,
+    regDate: "",
+    updDate: "",
   },
 };
 

@@ -7,6 +7,7 @@ export default function Column(props) {
   const dispatch = useDispatch();
   const { index, title } = props;
   const columnDatas = props.columnDatas;
+  // columnDatas.sort((a, b) => a.dataIndex - b.dataIndex);
 
   const handleCardClick = async (data) => {
     dispatch({ type: "setData", data: data });
@@ -37,8 +38,9 @@ export default function Column(props) {
                       onClick={() => handleCardClick(key)}
                     >
                       <Draggable
+                        // key={key.seq.toString()}
                         draggableId={key.id.toString()}
-                        index={key.index}
+                        index={key.dataIndex}
                       >
                         {(provided2, snapshot2) => (
                           <div
@@ -60,8 +62,7 @@ export default function Column(props) {
                             >
                               <CustomCard
                                 index={key.index}
-                                title={key.title}
-                                content={key.content}
+                                data={key}
                                 className="min-h-full"
                               />
                             </div>
