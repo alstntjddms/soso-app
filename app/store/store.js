@@ -1,4 +1,5 @@
 import { legacy_createStore as createStore } from "@reduxjs/toolkit";
+import sosoAPI from "../components/framework/api/sosoAPI";
 
 // 초기 상태 정의
 const initialState = {
@@ -46,6 +47,8 @@ function reducer(state = initialState, action) {
       newState.TransLoading = "none";
       break;
     case "setDatas":
+      console.log("초기화 action.data");
+      console.log(action.data);
       newState.datas = action.data;
       break;
     case "setData":

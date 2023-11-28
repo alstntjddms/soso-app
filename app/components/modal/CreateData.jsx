@@ -26,7 +26,7 @@ export default function CreateData() {
 
   const [title, setTitle] = useState(data.title);
   const [content, setContent] = useState(data.content);
-  const [fromMemberId, setFromMemberId] = useState(data.fromMemberId);
+  const [toMemberId, setToMemberId] = useState(data.toMemberId);
 
   const clickSaveBtn = async () => {
     // 서버로 데이터 전송
@@ -36,14 +36,14 @@ export default function CreateData() {
         title +
         "content : " +
         content +
-        "fromMemberId : " +
-        fromMemberId
+        "toMemberId : " +
+        toMemberId
     );
     await sosoAPI
       .post("/domain/data", {
         title: title,
         content: content,
-        fromMemberId: fromMemberId,
+        toMemberId: toMemberId,
       })
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
@@ -77,7 +77,7 @@ export default function CreateData() {
     });
     setTitle("");
     setContent("");
-    setFromMemberId("");
+    setToMemberId("");
     //로컬스토리지삭제
     localStorage.removeItem("minsu");
   };
@@ -110,7 +110,6 @@ export default function CreateData() {
         </ModalHeader>
         <ModalBody>
           <Input
-            tabIndex={-1}
             autoFocus
             label="타이틀"
             placeholder="제목을 입력하세요."
@@ -119,13 +118,12 @@ export default function CreateData() {
             onChange={(e) => setTitle(e.target.value)}
           />
           <Input
-            tabIndex={-1}
             autoFocus
             label="받는 사람"
             placeholder="받는 사람을 입력하세요."
             variant="bordered"
-            value={fromMemberId}
-            onChange={(e) => setFromMemberId(e.target.value)}
+            value={toMemberId}
+            onChange={(e) => setToMemberId(e.target.value)}
           />
           <div>
             <Editor

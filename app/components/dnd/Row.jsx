@@ -10,7 +10,7 @@ export default function Row(props) {
 
   // datas 세팅, 수정
   const datas = props.datas;
-  const updateData = props.updateData;
+  const patchDatas = props.patchDatas;
 
   const [columns, setColumns] = useState(datas);
   const [ordered, setOrdered] = useState(Object.keys(datas));
@@ -40,7 +40,7 @@ export default function Row(props) {
         [result.source.droppableId]: withQuoteRemoved,
       };
       setColumns(orderedColumns);
-      updateData(orderedColumns);
+      patchDatas(orderedColumns);
       // transLoading();
       return;
     }
@@ -82,14 +82,10 @@ export default function Row(props) {
       destination,
     });
     setColumns(data.quoteMap);
-    updateData(data.quoteMap);
+    console.log("data.quoteMap");
+    console.log(data.quoteMap);
+    patchDatas(data.quoteMap);
     // transLoading();
-  };
-
-  const transLoading = () => {
-    setTimeout(() => {
-      dispatch({ type: "closeTransLoading" });
-    }, 500);
   };
 
   return (

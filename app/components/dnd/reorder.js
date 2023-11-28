@@ -58,6 +58,7 @@ export const reorderQuoteMap = ({ quoteMap, source, destination }) => {
     next.splice(destination.index, 0, target);
     next.forEach((item, index) => {
       item.dataIndex = index;
+      item.state = destination.droppableId;
     });
     const result = {
       ...quoteMap,

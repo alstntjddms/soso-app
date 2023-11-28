@@ -54,4 +54,30 @@ export default class sosoAPI {
         }
       });
   }
+
+  static async patch(url, data) {
+    return await axios
+      .patch(SERVER_URL + url, data, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200) {
+          return res;
+        } else {
+          alert("에러 발생");
+        }
+      })
+      .catch((res) => {
+        if (res.response.status === HttpStatusCode.BadRequest) {
+          if (
+            res.response.data.name === "COOKIES_NOT_FOUND" ||
+            res.response.data.name === "JWT_FAIL_VALIDATE"
+          ) {
+            alert("로그인 정보를 잃었습니다.");
+            window.location.replace("/web/login");
+          }
+          return res;
+        } else {
+          alert("알수없는 에러");
+        }
+      });
+  }
 }

@@ -13,7 +13,7 @@ export default function Page() {
   const dispatch = useDispatch();
   const datas = useSelector((state) => state.datas);
 
-  const updateData = (datas) => {
+  const setDatas = (datas) => {
     dispatch({ type: "setDatas", data: datas });
   };
 
@@ -22,30 +22,50 @@ export default function Page() {
   };
 
   useEffect(() => {
-    const findDatasByLoginMember = async () => {
-      try {
-        await sosoAPI.get("/domain/datas").then((res) => {
-          if (res.status === HttpStatusCode.Ok) {
-            updateData(res.data);
-            console.log(res.data);
-          } else if (res.response.status === HttpStatusCode.BadRequest) {
-            dispatch({ type: "toggleCommonError", data: res.response.data });
-          }
-        });
-      } catch (error) {
-        console.error("Error fetching login member:", error);
-      } finally {
-        dispatch({ type: "closeLoading" });
-      }
-    };
     findDatasByLoginMember();
   }, []);
 
+  const findDatasByLoginMember = async () => {
+    try {
+      dispatch({ type: "openLoading" });
+      await sosoAPI.get("/domain/datas").then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          setDatas(res.data);
+          console.log(res.data);
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching login member:", error);
+    } finally {
+      dispatch({ type: "closeLoading" });
+    }
+  };
+
+  const patchDatas = async (datas) => {
+    try {
+      dispatch({ type: "openLoading" });
+      await sosoAPI.patch("/domain/datas", datas).then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          console.log(res);
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching login member:", error);
+    } finally {
+      findDatasByLoginMember();
+      dispatch({ type: "closeLoading" });
+    }
+  };
+
   return (
     <>
-      <Row datas={datas} updateData={updateData} />
+      <Row datas={datas} patchDatas={patchDatas} />
       <CreateData />
-      <ShowData updateData={updateData} />
+      <ShowData updateData={patchDatas} />
       <Button onPress={handleBtnClick}>추가</Button>
     </>
   );
