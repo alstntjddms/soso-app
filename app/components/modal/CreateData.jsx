@@ -49,13 +49,11 @@ export default function CreateData(props) {
   }, [dispatch]);
 
   const clickSaveBtn = () => {
-    console.log(Array.from(teamMember)[0]);
-
     sosoAPI
       .post("/data/data", {
         title: title,
         content: content,
-        toMemberId: Array.from(teamMember)[0],
+        toMemberId: teamMembers[Array.from(teamMember)[0]].memberId,
       })
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
@@ -139,8 +137,8 @@ export default function CreateData(props) {
             selectedKeys={teamMember}
             onSelectionChange={setTeamMember}
           >
-            {teamMembers.map((tm) => (
-              <SelectItem key={tm.memberId} value={tm.memberId}>
+            {teamMembers.map((tm, index) => (
+              <SelectItem key={index} value={tm.memberId}>
                 {tm.memberName}
               </SelectItem>
             ))}

@@ -52,14 +52,14 @@ export default function Logon(props) {
       findLoginMember();
       findTeamsByLoginId();
     }
+    console.log("team");
+    console.log(team);
   }, [state, dispatch, setState]);
 
   const handleLoginClick = async () => {
-    console.log("진입팀");
-    console.log(Array.from(team));
-    console.log(Array.from(team)[0]);
+    console.log(teams[Array.from(team)[0]]);
     await sosoAPI
-      .post("/team/login", JSON.parse(Array.from(team)[0]))
+      .post("/team/login", teams[Array.from(team)[0]])
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           console.log(res);
@@ -118,8 +118,8 @@ export default function Logon(props) {
             key={team}
             onSelectionChange={setTeam}
           >
-            {teams.map((t) => (
-              <SelectItem key={t} value={t.id}>
+            {teams.map((t, index) => (
+              <SelectItem key={index} value={t.id}>
                 {t.teamName}
               </SelectItem>
             ))}

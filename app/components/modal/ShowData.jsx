@@ -119,6 +119,14 @@ export default function ShowData(props) {
           />
           <Input
             autoFocus
+            label="보낸 사람"
+            placeholder="받는 사람을 입력하세요."
+            variant="bordered"
+            value={data.fromMemberId}
+            disabled
+          />
+          <Input
+            autoFocus
             label="받는 사람"
             placeholder="받는 사람을 입력하세요."
             variant="bordered"
