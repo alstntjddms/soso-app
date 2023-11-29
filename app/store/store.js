@@ -47,8 +47,6 @@ function reducer(state = initialState, action) {
       newState.TransLoading = "none";
       break;
     case "setDatas":
-      console.log("초기화 action.data");
-      console.log(action.data);
       newState.datas = action.data;
       break;
     case "setData":

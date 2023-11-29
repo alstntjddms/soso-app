@@ -82,8 +82,6 @@ export default function Row(props) {
       destination,
     });
     setColumns(data.quoteMap);
-    console.log("data.quoteMap");
-    console.log(data.quoteMap);
     patchDatas(data.quoteMap);
     // transLoading();
   };

@@ -23,7 +23,7 @@ export default function NewTeamCreate() {
 
   const createTeam = () => {
     sosoAPI
-      .post("/domain/team", {
+      .post("/team/team", {
         teamName: teamName,
       })
       .then((res) => {
@@ -42,7 +42,7 @@ export default function NewTeamCreate() {
   };
 
   const findTeamsByLoginId = () => {
-    sosoAPI.get("/domain/teams").then((res) => {
+    sosoAPI.get("/team/teams").then((res) => {
       if (res.status === HttpStatusCode.Ok) {
         console.log(res.data);
         dispatch({ type: "setTeams", data: res.data });

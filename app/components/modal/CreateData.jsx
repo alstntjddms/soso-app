@@ -7,6 +7,8 @@ import {
   ModalFooter,
   Button,
   Input,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,37 +19,48 @@ import { Editor } from "@/framework/novel";
 import sosoAPI from "../framework/api/sosoAPI";
 import { HttpStatusCode } from "axios";
 
-export default function CreateData() {
+export default function CreateData(props) {
   const dispatch = useDispatch();
-  const isOpen = useSelector((state) => state.createData);
-  const datas = useSelector((state) => state.datas);
-  const data = useSelector((state) => state.data);
-  const [saveStatus, setSaveStatus] = useState("Saved");
 
+  const isOpen = useSelector((state) => state.createData);
+  const data = useSelector((state) => state.data);
+
+  const findDatasByLoginMember = props.findDatasByLoginMember;
+
+  const [saveStatus, setSaveStatus] = useState("Saved");
   const [title, setTitle] = useState(data.title);
   const [content, setContent] = useState(data.content);
-  const [toMemberId, setToMemberId] = useState(data.toMemberId);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [teamMember, setTeamMember] = useState(new Set([]));
 
-  const clickSaveBtn = async () => {
-    // 서버로 데이터 전송
-    console.log(
-      "서버로 전송 데이터 : " +
-        "title : " +
-        title +
-        "content : " +
-        content +
-        "toMemberId : " +
-        toMemberId
-    );
-    await sosoAPI
-      .post("/domain/data", {
+  useEffect(() => {
+    const loadTeamMembers = async () => {
+      await sosoAPI.get("/team/members").then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          console.log(res.data);
+          setTeamMembers(res.data);
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
+        }
+      });
+    };
+
+    loadTeamMembers();
+  }, [dispatch]);
+
+  const clickSaveBtn = () => {
+    console.log(Array.from(teamMember)[0]);
+
+    sosoAPI
+      .post("/data/data", {
         title: title,
         content: content,
-        toMemberId: toMemberId,
+        toMemberId: Array.from(teamMember)[0],
       })
       .then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           console.log(res.data);
+          findDatasByLoginMember();
         } else if (res.response.status === HttpStatusCode.BadRequest) {
           dispatch({ type: "toggleCommonError", data: res.response.data });
         }
@@ -77,7 +90,6 @@ export default function CreateData() {
     });
     setTitle("");
     setContent("");
-    setToMemberId("");
     //로컬스토리지삭제
     localStorage.removeItem("minsu");
   };
@@ -117,14 +129,23 @@ export default function CreateData() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <Input
-            autoFocus
-            label="받는 사람"
-            placeholder="받는 사람을 입력하세요."
+
+          <Select
+            label="팀 멤버"
             variant="bordered"
-            value={toMemberId}
-            onChange={(e) => setToMemberId(e.target.value)}
-          />
+            placeholder="팀멤버를 선택하시오."
+            className="w-full"
+            fullWidth
+            selectedKeys={teamMember}
+            onSelectionChange={setTeamMember}
+          >
+            {teamMembers.map((tm) => (
+              <SelectItem key={tm.memberId} value={tm.memberId}>
+                {tm.memberName}
+              </SelectItem>
+            ))}
+          </Select>
+
           <div>
             <Editor
               storageKey="minsu"

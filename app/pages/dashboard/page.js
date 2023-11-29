@@ -27,8 +27,8 @@ export default function Page() {
 
   const findDatasByLoginMember = async () => {
     try {
-      dispatch({ type: "openLoading" });
-      await sosoAPI.get("/domain/datas").then((res) => {
+      // dispatch({ type: "openLoading" });
+      await sosoAPI.get("/data/datas").then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           setDatas(res.data);
         } else if (res.response.status === HttpStatusCode.BadRequest) {
@@ -44,10 +44,10 @@ export default function Page() {
 
   const patchDatas = async (datas) => {
     try {
-      dispatch({ type: "openTransLoading" });
-      await sosoAPI.patch("/domain/datas", datas).then((res) => {
+      // dispatch({ type: "openTransLoading" });
+      await sosoAPI.patch("/data/datas", datas).then((res) => {
         if (res.status === HttpStatusCode.Ok) {
-          console.log(res);
+          // console.log(res);
         } else if (res.response.status === HttpStatusCode.BadRequest) {
           dispatch({ type: "toggleCommonError", data: res.response.data });
         }
@@ -56,15 +56,15 @@ export default function Page() {
       dispatch({ type: "toggleCommonError", data: error });
     } finally {
       findDatasByLoginMember();
-      dispatch({ type: "closeTransLoading" });
+      // dispatch({ type: "closeTransLoading" });
     }
   };
 
   return (
     <>
       <Row datas={datas} patchDatas={patchDatas} />
-      <CreateData />
-      <ShowData updateData={patchDatas} />
+      <CreateData findDatasByLoginMember={findDatasByLoginMember} />
+      <ShowData findDatasByLoginMember={findDatasByLoginMember} />
       <Button onPress={handleBtnClick}>추가</Button>
     </>
   );

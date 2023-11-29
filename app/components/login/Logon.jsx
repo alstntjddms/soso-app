@@ -12,6 +12,8 @@ export default function Logon(props) {
   const router = useRouter();
   const { state, setState } = props;
   const teams = useSelector((state) => state.teams);
+
+  const [team, setTeam] = useState(new Set([]));
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
@@ -33,8 +35,9 @@ export default function Logon(props) {
 
     const findTeamsByLoginId = async () => {
       try {
-        const res = await sosoAPI.get("/domain/teams");
+        const res = await sosoAPI.get("/team/teams");
         if (res.status === HttpStatusCode.Ok) {
+          console.log(res.data);
           dispatch({ type: "setTeams", data: res.data });
         } else if (res.response.status === HttpStatusCode.BadRequest) {
           dispatch({ type: "toggleCommonError", data: res.response.data });
@@ -51,8 +54,20 @@ export default function Logon(props) {
     }
   }, [state, dispatch, setState]);
 
-  const handleLoginClick = (e) => {
-    e.preventDefault();
+  const handleLoginClick = async () => {
+    console.log("진입팀");
+    console.log(Array.from(team));
+    console.log(Array.from(team)[0]);
+    await sosoAPI
+      .post("/team/login", JSON.parse(Array.from(team)[0]))
+      .then((res) => {
+        if (res.status === HttpStatusCode.Ok) {
+          console.log(res);
+        } else if (res.response.status === HttpStatusCode.BadRequest) {
+          dispatch({ type: "toggleCommonError", data: res.response.data });
+        }
+      });
+
     router.replace("/pages/dashboard");
   };
 
@@ -98,16 +113,18 @@ export default function Logon(props) {
             label="참여 가능 팀 목록"
             variant="bordered"
             placeholder="프로젝트를 선택해 주세요."
-            // defaultSelectedKeys={["bbb"]}
             className="w-full"
             fullWidth
+            key={team}
+            onSelectionChange={setTeam}
           >
-            {teams.map((team) => (
-              <SelectItem key={team.id} value={team.id}>
-                {team.teamName}
+            {teams.map((t) => (
+              <SelectItem key={t} value={t.id}>
+                {t.teamName}
               </SelectItem>
             ))}
           </Select>
+
           <div className="bg-slate-200 p-4 space-y-2 shadow-sm rounded-lg">
             <Input
               size="sm"

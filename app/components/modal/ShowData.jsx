@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 // import { Editor as NovelEditor } from "novel";
 // import { Editor as NovelEditor } from "../framework/novel/dist";
 import { Editor } from "@/framework/novel";
+import sosoAPI from "../framework/api/sosoAPI";
+import { HttpStatusCode } from "axios";
 
 export default function ShowData(props) {
   const dispatch = useDispatch();
@@ -21,10 +23,11 @@ export default function ShowData(props) {
   const datas = useSelector((state) => state.datas);
   const isOpen = useSelector((state) => state.showData);
   const [saveStatus, setSaveStatus] = useState("Saved");
+
   const [title, setTitle] = useState(data.title);
   const [content, setContent] = useState(data.content);
 
-  const updateData = props.updateData;
+  const findDatasByLoginMember = props.findDatasByLoginMember;
 
   useEffect(() => {
     setTitle(data.title);
@@ -53,16 +56,32 @@ export default function ShowData(props) {
   };
 
   const clickSaveBtn = () => {
-    const updatedData = {
+    const updateData = {
       id: data.id,
+      dataIndex: data.Index,
+      state: data.state,
+      fromMemberId: data.fromMemberId,
+      toMemberId: data.toMemberId,
+      teamId: data.teamId,
       title: title,
       content: localStorage.getItem("minsu"),
-      index: data.index,
+      delYn: data.delYn,
+      regDate: data.regDate,
+      updDate: data.updDate,
     };
 
-    const updatedDatas = updateDatasById(updatedData, datas);
-    // dispatch({ type: "setDatas", data: updatedDatas });
-    updateData(updatedDatas);
+    console.log("data");
+    console.log(updateData);
+    sosoAPI.patch("/data/data", updateData).then((res) => {
+      if (res.status === HttpStatusCode.Ok) {
+        console.log(res);
+      } else if (res.response.status === HttpStatusCode.BadRequest) {
+        dispatch({ type: "toggleCommonError", data: res.response.data });
+      }
+    });
+
+    // const updatedDatas = updateDatasById(data, datas);
+    findDatasByLoginMember();
     onClose();
   };
 
@@ -97,6 +116,14 @@ export default function ShowData(props) {
             variant="bordered"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+          />
+          <Input
+            autoFocus
+            label="받는 사람"
+            placeholder="받는 사람을 입력하세요."
+            variant="bordered"
+            value={data.toMemberId}
+            disabled
           />
           <div>
             <Editor

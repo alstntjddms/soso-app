@@ -17,7 +17,7 @@ export default function Column(props) {
   };
 
   const getData = async (data) => {
-    await sosoAPI.get("/domain/data/" + data.id).then((res) => {
+    await sosoAPI.get("/data/data/" + data.id).then((res) => {
       if (res.status === HttpStatusCode.Ok) {
         dispatch({ type: "setData", data: res.data });
       } else if (res.response.status === HttpStatusCode.BadRequest) {

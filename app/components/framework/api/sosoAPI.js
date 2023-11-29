@@ -1,4 +1,5 @@
 import axios, { HttpStatusCode } from "axios";
+import Cookies from "js-cookie";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_URL;
 
@@ -20,6 +21,7 @@ export default class sosoAPI {
             res.response.data.name === "JWT_FAIL_VALIDATE"
           ) {
             alert("로그인 정보를 잃었습니다.");
+            Cookies.remove("sosoJwtToken");
             window.location.replace("/web/login");
           }
           return res;
