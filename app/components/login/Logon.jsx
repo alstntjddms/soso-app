@@ -52,8 +52,6 @@ export default function Logon(props) {
       findLoginMember();
       findTeamsByLoginId();
     }
-    console.log("team");
-    console.log(team);
   }, [state, dispatch, setState]);
 
   const handleLoginClick = async () => {
