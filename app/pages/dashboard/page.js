@@ -23,11 +23,13 @@ export default function Page() {
 
   useEffect(() => {
     findDatasByLoginMember();
+    dispatch({ type: "closeLoading" });
+    const intervalId = setInterval(findDatasByLoginMember, 10000);
+    return () => clearInterval(intervalId);
   }, []);
 
   const findDatasByLoginMember = async () => {
     try {
-      // dispatch({ type: "openLoading" });
       await sosoAPI.get("/data/datas").then((res) => {
         if (res.status === HttpStatusCode.Ok) {
           setDatas(res.data);

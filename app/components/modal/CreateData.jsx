@@ -88,6 +88,7 @@ export default function CreateData(props) {
     });
     setTitle("");
     setContent("");
+    setTeamMember(new Set([]));
     //로컬스토리지삭제
     localStorage.removeItem("minsu");
   };

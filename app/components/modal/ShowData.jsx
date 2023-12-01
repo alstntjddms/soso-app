@@ -125,14 +125,6 @@ export default function ShowData(props) {
             value={data.fromMemberId}
             disabled
           />
-          <Input
-            autoFocus
-            label="받는 사람"
-            placeholder="받는 사람을 입력하세요."
-            variant="bordered"
-            value={data.toMemberId}
-            disabled
-          />
           <div>
             <Editor
               storageKey="minsu"

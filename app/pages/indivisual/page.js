@@ -1,6 +1,6 @@
 "use client";
 import sosoAPI from "@/app/components/framework/api/sosoAPI";
-import { Input, Button } from "@nextui-org/react";
+import { Input, Button, Card, CardBody } from "@nextui-org/react";
 import { HttpStatusCode } from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -31,24 +31,28 @@ export default function Page() {
       });
   };
   return (
-    <div className="bg-white">
-      <Input
-        autoFocus
-        label="이메일"
-        placeholder="이메일을 입력하세요."
-        variant="bordered"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+    <Card className="w-64 m-10">
+      <CardBody>
+        <div className="bg-white">
+          <Input
+            autoFocus
+            label="이메일"
+            placeholder="이메일을 입력하세요."
+            variant="bordered"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-      <Button
-        variant="bordered"
-        color="green"
-        className="w-full hover:bg-cyan-950 hover:text-white"
-        onClick={handleAddMember}
-      >
-        멤버 추가
-      </Button>
-    </div>
+          <Button
+            variant="bordered"
+            color="green"
+            className="w-full hover:bg-cyan-950 hover:text-white"
+            onClick={handleAddMember}
+          >
+            멤버 초대
+          </Button>
+        </div>
+      </CardBody>
+    </Card>
   );
 }
