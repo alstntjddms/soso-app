@@ -29,8 +29,6 @@ export default function ShowData(props) {
   const findDatasByLoginMember = props.findDatasByLoginMember;
 
   useEffect(() => {
-    console.log("teamMembers");
-    console.log(teamMembers);
     setTitle(data.title);
     setContent(data.content);
     localStorage.setItem("minsu", data.content);

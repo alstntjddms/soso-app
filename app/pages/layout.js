@@ -25,6 +25,7 @@ export default function Layout({ children }) {
         <div className="relative flex items-center">
           <div className="mr-3 flex-none w-[100px] overflow-hidden">
             <Image
+              alt="로고"
               width={80}
               src="https://nacredit.kz/wp-content/uploads/2022/12/soso.png"
             ></Image>
