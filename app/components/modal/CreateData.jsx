@@ -10,11 +10,8 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addData } from "../dnd/reorder";
-// import { Editor as NovelEditor } from "novel";
-// import { Editor as NovelEditor } from "../framework/novel/dist";
 import { Editor } from "@/framework/novel";
 import sosoAPI from "../framework/api/sosoAPI";
 import { HttpStatusCode } from "axios";
@@ -22,31 +19,15 @@ import { HttpStatusCode } from "axios";
 export default function CreateData(props) {
   const dispatch = useDispatch();
 
-  const isOpen = useSelector((state) => state.createData);
-  const data = useSelector((state) => state.data);
-
   const findDatasByLoginMember = props.findDatasByLoginMember;
 
+  const isOpen = useSelector((state) => state.createData);
+  const teamMembers = useSelector((state) => state.teamMembers);
+
   const [saveStatus, setSaveStatus] = useState("Saved");
-  const [title, setTitle] = useState(data.title);
-  const [content, setContent] = useState(data.content);
-  const [teamMembers, setTeamMembers] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [teamMember, setTeamMember] = useState(new Set([]));
-
-  useEffect(() => {
-    const loadTeamMembers = async () => {
-      await sosoAPI.get("/team/members").then((res) => {
-        if (res.status === HttpStatusCode.Ok) {
-          console.log(res.data);
-          setTeamMembers(res.data);
-        } else if (res.response.status === HttpStatusCode.BadRequest) {
-          dispatch({ type: "toggleCommonError", data: res.response.data });
-        }
-      });
-    };
-
-    loadTeamMembers();
-  }, [dispatch]);
 
   const clickSaveBtn = () => {
     sosoAPI
@@ -70,22 +51,6 @@ export default function CreateData(props) {
 
   const onClose = () => {
     dispatch({ type: "toggleCreateData" });
-    dispatch({
-      type: "setData",
-      data: {
-        id: "",
-        dataIndex: "",
-        state: "",
-        fromMemberId: "",
-        toMemberId: "",
-        teamId: "",
-        title: "",
-        content: "",
-        delYn: false,
-        regDate: "",
-        updDate: "",
-      },
-    });
     setTitle("");
     setContent("");
     setTeamMember(new Set([]));
@@ -93,15 +58,11 @@ export default function CreateData(props) {
     localStorage.removeItem("minsu");
   };
 
-  // useEffect(() => {
-  //   setTitle(data.title);
-  //   setContent(data.content);
-  // }, [data.title, data.content]);
-
   const contentSave = () => {
     setContent(localStorage.getItem("minsu"));
     setSaveStatus("Saved");
   };
+
   return (
     <Modal
       isOpen={isOpen}

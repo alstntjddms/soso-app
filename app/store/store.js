@@ -1,19 +1,23 @@
 import { legacy_createStore as createStore } from "@reduxjs/toolkit";
-import sosoAPI from "../components/framework/api/sosoAPI";
 
 // 초기 상태 정의
 const initialState = {
+  // 로딩
   Loading: "flex",
-  showData: false,
-  createData: false,
   TransLoading: "none",
-  newTeamCreate: false,
+
+  // 공통 모달
   commonError: false,
   commonErrorInfo: { name: "", message: "", errorDate: "" },
   commonSuccess: false,
   commonSuccessInfo: { message: "" },
 
-  teams: [],
+  // 모달
+  showData: false,
+  createData: false,
+  newTeamCreate: false,
+
+  // 데이터
   datas: {},
   data: {
     id: "",
@@ -28,12 +32,15 @@ const initialState = {
     regDate: "",
     updDate: "",
   },
+  teams: [],
+  teamMembers: [],
 };
 
 function reducer(state = initialState, action) {
   const newState = { ...state };
   // state 변경
   switch (action.type) {
+    //로딩
     case "openLoading":
       newState.Loading = "flex";
       break;
@@ -46,12 +53,18 @@ function reducer(state = initialState, action) {
     case "closeTransLoading":
       newState.TransLoading = "none";
       break;
-    case "setDatas":
-      newState.datas = action.data;
+
+    // 공통 모달
+    case "toggleCommonError":
+      newState.commonError = !state.commonError;
+      newState.commonErrorInfo = action.data;
       break;
-    case "setData":
-      newState.data = action.data;
+    case "toggleCommonSuccess":
+      newState.commonSuccess = !state.commonSuccess;
+      newState.commonSuccessInfo.message = action.data;
       break;
+
+    // 모달
     case "toggleShowData":
       newState.showData = !state.showData;
       break;
@@ -61,18 +74,22 @@ function reducer(state = initialState, action) {
     case "toggleNewTeamCreate":
       newState.newTeamCreate = !state.newTeamCreate;
       break;
-    case "toggleCommonError":
-      newState.commonError = !state.commonError;
-      newState.commonErrorInfo = action.data;
+
+    // 데이터
+    case "setDatas":
+      newState.datas = action.data;
       break;
-    case "toggleCommonSuccess":
-      newState.commonSuccess = !state.commonSuccess;
-      newState.commonSuccessInfo.message = action.data;
+    case "setData":
+      newState.data = action.data;
       break;
     case "setTeams":
       newState.teams = action.data;
       break;
+    case "setTeamMembers":
+      newState.teamMembers = action.data;
+      break;
   }
+
   return newState;
 }
 

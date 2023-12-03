@@ -26,6 +26,7 @@ export default function Page() {
           console.log(res.data);
           alert("등록 성공");
         } else if (res.response.status === HttpStatusCode.BadRequest) {
+          console.log(res);
           dispatch({ type: "toggleCommonError", data: res.response.data });
         }
       });

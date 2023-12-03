@@ -2,7 +2,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import Row from "@/app/components/dnd/Row";
-import { Button } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import CreateData from "@/app/components/modal/CreateData";
 import ShowData from "@/app/components/modal/ShowData";
 import { useEffect } from "react";
@@ -23,7 +23,7 @@ export default function Page() {
 
   useEffect(() => {
     findDatasByLoginMember();
-    dispatch({ type: "closeLoading" });
+    findTeamMembers();
     const intervalId = setInterval(findDatasByLoginMember, 10000);
     return () => clearInterval(intervalId);
   }, []);
@@ -42,6 +42,16 @@ export default function Page() {
     } finally {
       dispatch({ type: "closeLoading" });
     }
+  };
+
+  const findTeamMembers = async () => {
+    await sosoAPI.get("/team/members").then((res) => {
+      if (res.status === HttpStatusCode.Ok) {
+        dispatch({ type: "setTeamMembers", data: res.data });
+      } else if (res.response.status === HttpStatusCode.BadRequest) {
+        dispatch({ type: "toggleCommonError", data: res.response.data });
+      }
+    });
   };
 
   const patchDatas = async (datas) => {
@@ -63,11 +73,24 @@ export default function Page() {
   };
 
   return (
-    <>
+    <div className="p-4">
+      <Card className="w-[1050px] mb-4">
+        <CardBody>
+          <div className="flex">
+            <Button
+              variant="bordered"
+              color="green"
+              className="hover:bg-cyan-950 hover:text-white block"
+              onPress={handleBtnClick}
+            >
+              요청
+            </Button>
+          </div>
+        </CardBody>
+      </Card>
       <Row datas={datas} patchDatas={patchDatas} />
       <CreateData findDatasByLoginMember={findDatasByLoginMember} />
       <ShowData findDatasByLoginMember={findDatasByLoginMember} />
-      <Button onPress={handleBtnClick}>추가</Button>
-    </>
+    </div>
   );
 }

@@ -14,7 +14,7 @@ export default function Menu() {
     >
       <AccordionItem key="1" aria-label="메뉴1" title="메뉴1">
         <Link href="/pages/dashboard" className="text-blue-500 hover:underline">
-          dashboard
+          대시 보드
         </Link>
       </AccordionItem>
       <AccordionItem key="2" aria-label="메뉴2" title="메뉴2">
@@ -22,7 +22,7 @@ export default function Menu() {
           href="/pages/indivisual"
           className="text-blue-500 hover:underline"
         >
-          indivisual
+          멤버 초대
         </Link>
       </AccordionItem>
       <AccordionItem key="3" aria-label="메뉴3" title="메뉴3">
@@ -30,7 +30,7 @@ export default function Menu() {
           href="/pages/teamleader"
           className="text-blue-500 hover:underline"
         >
-          teamleader
+          테스트
         </Link>
       </AccordionItem>
     </Accordion>

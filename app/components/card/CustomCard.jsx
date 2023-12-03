@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 export default function CustomCard(props) {
   const data = props.data;
+  const selectYn = props.selectYn;
   const updDate = new Date(data.updDate);
 
   // 날짜를 직접 형식에 맞게 포맷
@@ -20,11 +21,18 @@ export default function CustomCard(props) {
     data.updDate = "시간등록안됨";
   }
   return (
-    <Card className="" radius="none" fullWidth={true}>
+    <Card
+      radius="sm"
+      className={selectYn ? " scale-110 border-2 border-red-500" : ""}
+      fullWidth={true}
+      shadow="sm"
+    >
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
         <h4 className="font-bold text-large">{data.title}</h4>
       </CardHeader>
-      <CardBody className="text-right">{finalFormattedDateTime}</CardBody>
+      <CardBody className="text-right text-sm">
+        {finalFormattedDateTime}
+      </CardBody>
     </Card>
   );
 }

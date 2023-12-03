@@ -11,29 +11,30 @@ import {
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { Editor as NovelEditor } from "novel";
-// import { Editor as NovelEditor } from "../framework/novel/dist";
 import { Editor } from "@/framework/novel";
 import sosoAPI from "../framework/api/sosoAPI";
 import { HttpStatusCode } from "axios";
 
 export default function ShowData(props) {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.data);
-  const datas = useSelector((state) => state.datas);
-  const isOpen = useSelector((state) => state.showData);
-  const [saveStatus, setSaveStatus] = useState("Saved");
 
+  const data = useSelector((state) => state.data);
+  const isOpen = useSelector((state) => state.showData);
+  const teamMembers = useSelector((state) => state.teamMembers);
+
+  const [saveStatus, setSaveStatus] = useState("Saved");
   const [title, setTitle] = useState(data.title);
   const [content, setContent] = useState(data.content);
 
   const findDatasByLoginMember = props.findDatasByLoginMember;
 
   useEffect(() => {
+    console.log("teamMembers");
+    console.log(teamMembers);
     setTitle(data.title);
     setContent(data.content);
     localStorage.setItem("minsu", data.content);
-  }, [data.title, data.content]);
+  }, [data]);
 
   const onClose = () => {
     dispatch({ type: "toggleShowData" });
@@ -64,7 +65,7 @@ export default function ShowData(props) {
       toMemberId: data.toMemberId,
       teamId: data.teamId,
       title: title,
-      content: localStorage.getItem("minsu"),
+      content: content,
       delYn: data.delYn,
       regDate: data.regDate,
       updDate: data.updDate,
@@ -122,9 +123,16 @@ export default function ShowData(props) {
             label="보낸 사람"
             placeholder="받는 사람을 입력하세요."
             variant="bordered"
-            value={data.fromMemberId}
-            disabled
+            value={
+              data.fromMemberId
+                ? teamMembers.find(
+                    (member) => member.memberId === data.fromMemberId
+                  )?.memberName || "멤버를 찾을 수 없음"
+                : "fromMemberId가 없음"
+            }
+            isDisabled
           />
+
           <div>
             <Editor
               storageKey="minsu"

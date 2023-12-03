@@ -97,17 +97,12 @@ export default function Row(props) {
       >
         {(provided) => (
           <div
-            className="inline-flex min-h-full m-[15px]"
+            className="inline-flex min-h-full"
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
             {ordered.map((key, index) => (
-              <div
-                key={key}
-                // style={{
-                //   border: "1px solid red",
-                // }}
-              >
+              <div key={key}>
                 <Column index={index} title={key} columnDatas={columns[key]} />
               </div>
             ))}

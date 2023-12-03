@@ -9,7 +9,6 @@ export default function Column(props) {
   const dispatch = useDispatch();
   const { index, title } = props;
   const columnDatas = props.columnDatas;
-  // columnDatas.sort((a, b) => a.dataIndex - b.dataIndex);
 
   const handleCardClick = async (data) => {
     await getData(data);
@@ -30,9 +29,9 @@ export default function Column(props) {
     <Draggable draggableId={title} index={index}>
       {(provided, snapshot) => (
         <div ref={provided.innerRef} {...provided.draggableProps}>
-          <div className="flex flex-col bg-stone-200 mr-4 border-solid border-2 border-indigo-950">
+          <div className="flex flex-col mr-4 border-solid border-cyan-950 rounded-lg">
             <div
-              className="font-bold text-large text-center bg-stone-700 text-white"
+              className="font-bold text-large text-center bg-cyan-950 text-white rounded-t-lg"
               {...provided.dragHandleProps}
             >
               {title}
@@ -42,7 +41,7 @@ export default function Column(props) {
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="w-64 h-96 overflow-auto p-2"
+                  className="w-64 h-[400px] max-h-[400px] overflow-auto p-2 border-1 rounded-b-lg"
                 >
                   {columnDatas.map((key, index) => (
                     <div
@@ -50,7 +49,6 @@ export default function Column(props) {
                       onClick={() => handleCardClick(key)}
                     >
                       <Draggable
-                        // key={key.seq.toString()}
                         draggableId={key.id.toString()}
                         index={key.dataIndex}
                       >
@@ -62,20 +60,13 @@ export default function Column(props) {
                           >
                             <div
                               {...provided2.dragHandleProps}
-                              style={{
-                                border: snapshot2.isDragging
-                                  ? "2px solid yellow"
-                                  : null,
-                                transform: snapshot2.isDragging
-                                  ? "scale(1.1)"
-                                  : null,
-                              }}
                               className="hover:brightness-75"
                             >
                               <CustomCard
                                 index={key.index}
                                 data={key}
                                 className="min-h-full"
+                                selectYn={snapshot2.isDragging}
                               />
                             </div>
                           </div>
