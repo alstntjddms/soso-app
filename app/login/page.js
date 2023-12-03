@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import store from "@/app/store/store";
 import TransLoading from "../components/loading/TransLoading";
 import Cookies from "js-cookie";
+import CommonError from "../components/modal/common/CommonError";
+import CommonSuccess from "../components/modal/common/CommonSuccess";
 
 export default function Page() {
   const [state, setState] = useState("login");
@@ -24,6 +26,8 @@ export default function Page() {
         <Register state={state} setState={setState} />
         <Logon state={state} setState={setState} />
         <TransLoading />
+        <CommonError />
+        <CommonSuccess />
       </Provider>
     </div>
   );
