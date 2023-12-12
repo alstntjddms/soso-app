@@ -257,8 +257,8 @@ ul[data-type=taskList] li[data-checked=true] > div > p {
 `);
 
 // src/ui/editor/index.tsx
-var import_react11 = require("react");
-var import_react12 = require("@tiptap/react");
+var import_react12 = require("react");
+var import_react13 = require("@tiptap/react");
 
 // src/ui/editor/plugins/upload-images.tsx
 var import_sonner = require("sonner");
@@ -276,6 +276,7 @@ var UploadImagesPlugin = () => new import_state.Plugin({
       const action = tr.getMeta(this);
       if (action && action.add) {
         const { id, pos, src } = action.add;
+        console.log(action.add);
         const placeholder = document.createElement("div");
         placeholder.setAttribute("class", "img-placeholder");
         const image = document.createElement("img");
@@ -340,20 +341,18 @@ function startImageUpload(file, view, pos) {
       return;
     const imageSrc = typeof src === "object" ? reader.result : src;
     const node = schema.nodes.image.create({ src: imageSrc });
-    const transaction = view.state.tr.replaceWith(pos2, pos2, node).setMeta(uploadKey, { remove: { id } });
+    const transaction = view.state.tr.replaceWith(pos2, pos2, node);
     view.dispatch(transaction);
   });
 }
 var handleImageUpload = (file) => {
   return new Promise((resolve) => {
+    const formData = new FormData();
+    formData.append("file", file);
     import_sonner.toast.promise(
-      fetch("/api/upload", {
+      fetch("/api/file/upload", {
         method: "POST",
-        headers: {
-          "content-type": (file == null ? void 0 : file.type) || "application/octet-stream",
-          "x-vercel-filename": (file == null ? void 0 : file.name) || "image.png"
-        },
-        body: file
+        body: formData
       }).then((res) => __async(void 0, null, function* () {
         if (res.status === 200) {
           const { url } = yield res.json();
@@ -364,9 +363,6 @@ var handleImageUpload = (file) => {
           };
         } else if (res.status === 401) {
           resolve(file);
-          throw new Error(
-            "`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead."
-          );
         } else {
           throw new Error(`Error uploading image. Please try again.`);
         }
@@ -1241,7 +1237,7 @@ var use_local_storage_default = useLocalStorage;
 
 // src/ui/editor/index.tsx
 var import_use_debounce = require("use-debounce");
-var import_react13 = require("ai/react");
+var import_react14 = require("ai/react");
 var import_sonner3 = require("sonner");
 var import_analytics2 = __toESM(require("@vercel/analytics"));
 
@@ -2090,6 +2086,9 @@ var EditorBubbleMenu = (props) => {
     })
   );
 };
+
+// src/ui/editor/extensions/image-resizer.tsx
+var import_react11 = require("react");
 
 // ../../node_modules/.pnpm/@egjs+agent@2.4.3/node_modules/@egjs/agent/dist/agent.esm.js
 function some(arr, callback) {
@@ -16717,11 +16716,26 @@ var ImageResizer = ({ editor }) => {
       editor.commands.setNodeSelection(selection.from);
     }
   };
+  const moveableRef = (0, import_react11.useRef)(null);
+  (0, import_react11.useEffect)(() => {
+    const handleScroll = () => {
+      if (moveableRef.current) {
+        moveableRef.current.updateRect();
+      }
+      console.log("\uC2A4\uD06C\uB864 \uC774\uBCA4\uD2B8 \uBC1C\uC0DD!");
+    };
+    const editorContent = document.querySelector(".editor-content");
+    editorContent == null ? void 0 : editorContent.addEventListener("scroll", handleScroll);
+    return () => {
+      editorContent == null ? void 0 : editorContent.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_jsx_runtime9.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
     Moveable,
     {
+      ref: moveableRef,
       target: document.querySelector(".ProseMirror-selectednode"),
-      container: null,
+      container: document.querySelector(".editor-content"),
       origin: false,
       edge: false,
       throttleDrag: 0,
@@ -16774,7 +16788,7 @@ function Editor2({
   disableLocalStorage = false
 }) {
   const [content, setContent] = use_local_storage_default(storageKey, defaultValue);
-  const [hydrated, setHydrated] = (0, import_react11.useState)(false);
+  const [hydrated, setHydrated] = (0, import_react12.useState)(false);
   const debouncedUpdates = (0, import_use_debounce.useDebouncedCallback)((_0) => __async(this, [_0], function* ({ editor: editor2 }) {
     const json = editor2.getJSON();
     onDebouncedUpdate(editor2);
@@ -16782,7 +16796,7 @@ function Editor2({
       setContent(json);
     }
   }), debounceDuration);
-  const editor = (0, import_react12.useEditor)({
+  const editor = (0, import_react13.useEditor)({
     extensions: [...defaultExtensions, ...extensions],
     editorProps: __spreadValues(__spreadValues({}, defaultEditorProps), editorProps),
     onUpdate: (e) => {
@@ -16808,7 +16822,7 @@ function Editor2({
     },
     autofocus: "end"
   });
-  const { complete, completion, isLoading, stop } = (0, import_react13.useCompletion)({
+  const { complete, completion, isLoading, stop } = (0, import_react14.useCompletion)({
     id: "novel",
     api: completionApi,
     onFinish: (_prompt, completion2) => {
@@ -16824,13 +16838,13 @@ function Editor2({
       }
     }
   });
-  const { summarizeApi } = (0, import_react11.useContext)(ContextSummarize);
+  const { summarizeApi } = (0, import_react12.useContext)(ContextSummarize);
   const {
     complete: complete1,
     completion: completion1,
     isLoading: isLoading1,
     stop: stop1
-  } = (0, import_react13.useCompletion)({
+  } = (0, import_react14.useCompletion)({
     id: "novel1",
     api: summarizeApi,
     onFinish: (_prompt, completion2) => {
@@ -16846,18 +16860,18 @@ function Editor2({
       }
     }
   });
-  const prev = (0, import_react11.useRef)("");
-  (0, import_react11.useEffect)(() => {
+  const prev = (0, import_react12.useRef)("");
+  (0, import_react12.useEffect)(() => {
     const diff3 = completion.slice(prev.current.length);
     prev.current = completion;
     editor == null ? void 0 : editor.commands.insertContent(diff3);
   }, [isLoading, editor, completion]);
-  (0, import_react11.useEffect)(() => {
+  (0, import_react12.useEffect)(() => {
     const diff3 = completion1.slice(prev.current.length);
     prev.current = completion1;
     editor == null ? void 0 : editor.commands.insertContent(diff3);
   }, [editor, isLoading1, completion1]);
-  (0, import_react11.useEffect)(() => {
+  (0, import_react12.useEffect)(() => {
     const onKeyDown = (e) => {
       if (e.key === "Escape" || e.metaKey && e.key === "z") {
         stop();
@@ -16890,7 +16904,7 @@ function Editor2({
       window.removeEventListener("mousedown", mousedownHandler);
     };
   }, [stop, isLoading, editor, complete, completion.length]);
-  (0, import_react11.useEffect)(() => {
+  (0, import_react12.useEffect)(() => {
     if (!editor || hydrated)
       return;
     const value = disableLocalStorage ? defaultValue : content;
@@ -16915,7 +16929,7 @@ function Editor2({
           children: [
             editor && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(EditorBubbleMenu, { editor }),
             (editor == null ? void 0 : editor.isActive("image")) && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(ImageResizer, { editor }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_react12.EditorContent, { editor })
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_react13.EditorContent, { editor })
           ]
         }
       )

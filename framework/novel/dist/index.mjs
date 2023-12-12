@@ -224,7 +224,7 @@ ul[data-type=taskList] li[data-checked=true] > div > p {
 `);
 
 // src/ui/editor/index.tsx
-import { useContext as useContext2, useEffect as useEffect5, useRef as useRef4, useState as useState4 } from "react";
+import { useContext as useContext2, useEffect as useEffect6, useRef as useRef5, useState as useState4 } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 
 // src/ui/editor/plugins/upload-images.tsx
@@ -243,6 +243,7 @@ var UploadImagesPlugin = () => new Plugin({
       const action = tr.getMeta(this);
       if (action && action.add) {
         const { id, pos, src } = action.add;
+        console.log(action.add);
         const placeholder = document.createElement("div");
         placeholder.setAttribute("class", "img-placeholder");
         const image = document.createElement("img");
@@ -307,20 +308,18 @@ function startImageUpload(file, view, pos) {
       return;
     const imageSrc = typeof src === "object" ? reader.result : src;
     const node = schema.nodes.image.create({ src: imageSrc });
-    const transaction = view.state.tr.replaceWith(pos2, pos2, node).setMeta(uploadKey, { remove: { id } });
+    const transaction = view.state.tr.replaceWith(pos2, pos2, node);
     view.dispatch(transaction);
   });
 }
 var handleImageUpload = (file) => {
   return new Promise((resolve) => {
+    const formData = new FormData();
+    formData.append("file", file);
     toast.promise(
-      fetch("/api/upload", {
+      fetch("/api/file/upload", {
         method: "POST",
-        headers: {
-          "content-type": (file == null ? void 0 : file.type) || "application/octet-stream",
-          "x-vercel-filename": (file == null ? void 0 : file.name) || "image.png"
-        },
-        body: file
+        body: formData
       }).then((res) => __async(void 0, null, function* () {
         if (res.status === 200) {
           const { url } = yield res.json();
@@ -331,9 +330,6 @@ var handleImageUpload = (file) => {
           };
         } else if (res.status === 401) {
           resolve(file);
-          throw new Error(
-            "`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead."
-          );
         } else {
           throw new Error(`Error uploading image. Please try again.`);
         }
@@ -2101,6 +2097,9 @@ var EditorBubbleMenu = (props) => {
     })
   );
 };
+
+// src/ui/editor/extensions/image-resizer.tsx
+import { useEffect as useEffect5, useRef as useRef4 } from "react";
 
 // ../../node_modules/.pnpm/@egjs+agent@2.4.3/node_modules/@egjs/agent/dist/agent.esm.js
 function some(arr, callback) {
@@ -16728,11 +16727,26 @@ var ImageResizer = ({ editor }) => {
       editor.commands.setNodeSelection(selection.from);
     }
   };
+  const moveableRef = useRef4(null);
+  useEffect5(() => {
+    const handleScroll = () => {
+      if (moveableRef.current) {
+        moveableRef.current.updateRect();
+      }
+      console.log("\uC2A4\uD06C\uB864 \uC774\uBCA4\uD2B8 \uBC1C\uC0DD!");
+    };
+    const editorContent = document.querySelector(".editor-content");
+    editorContent == null ? void 0 : editorContent.addEventListener("scroll", handleScroll);
+    return () => {
+      editorContent == null ? void 0 : editorContent.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return /* @__PURE__ */ jsx9(Fragment, { children: /* @__PURE__ */ jsx9(
     Moveable,
     {
+      ref: moveableRef,
       target: document.querySelector(".ProseMirror-selectednode"),
-      container: null,
+      container: document.querySelector(".editor-content"),
       origin: false,
       edge: false,
       throttleDrag: 0,
@@ -16857,18 +16871,18 @@ function Editor2({
       }
     }
   });
-  const prev = useRef4("");
-  useEffect5(() => {
+  const prev = useRef5("");
+  useEffect6(() => {
     const diff3 = completion.slice(prev.current.length);
     prev.current = completion;
     editor == null ? void 0 : editor.commands.insertContent(diff3);
   }, [isLoading, editor, completion]);
-  useEffect5(() => {
+  useEffect6(() => {
     const diff3 = completion1.slice(prev.current.length);
     prev.current = completion1;
     editor == null ? void 0 : editor.commands.insertContent(diff3);
   }, [editor, isLoading1, completion1]);
-  useEffect5(() => {
+  useEffect6(() => {
     const onKeyDown = (e) => {
       if (e.key === "Escape" || e.metaKey && e.key === "z") {
         stop();
@@ -16901,7 +16915,7 @@ function Editor2({
       window.removeEventListener("mousedown", mousedownHandler);
     };
   }, [stop, isLoading, editor, complete, completion.length]);
-  useEffect5(() => {
+  useEffect6(() => {
     if (!editor || hydrated)
       return;
     const value = disableLocalStorage ? defaultValue : content;

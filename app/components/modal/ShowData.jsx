@@ -147,7 +147,7 @@ export default function ShowData(props) {
               defaultValue={() => {
                 return JSON.parse(data.content);
               }}
-              className="overflow-auto w-full min-h-[300px] max-h-[500px] sm:rounded-lg sm:border sm:shadow-lg"
+              className="overflow-auto w-full min-h-[300px] max-h-[500px] sm:rounded-lg sm:border sm:shadow-lg editor-content"
               // completionApi="http://localhost:8081/api/kace"
             />
           </div>
