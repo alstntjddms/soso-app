@@ -1,7 +1,7 @@
 import axios, { HttpStatusCode } from "axios";
 import Cookies from "js-cookie";
 
-const SERVER_URL = process.env.NEXT_PUBLIC_URL;
+const SERVER_URL = process.env.NEXT_PUBLIC_API;
 
 export default class sosoAPI {
   static async get(url) {
